@@ -13,16 +13,22 @@ function renderVersion(renderedVersion) {
   });
 }
 function renderToolbar() {
-  var empty = true;
+  var versionList = [];
   $('div').each(function(index, element) {
     var modifVersion = $(this).attr('modificationVersion');
     if(modifVersion !== undefined && modifVersion != null && modifVersion != '') {
-      empty = false;
+      versionList.push(modifVersion);
     }
   });
   return {
     isEmpty: function() {
-      return empty;
+      return this.length() == 0;
+    },
+    length: function() {
+      return versionList.length;
+    },
+    versions: function() {
+      return versionList;
     }
   };
 }
