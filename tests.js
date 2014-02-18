@@ -46,3 +46,7 @@ test( "Div added in version 2 is visible while reading version 2", function() {
   renderVersion(2);
   verifyRendering(false, "visible");
 });
+test( "No modification toolbar if no div with specific attributes", function() {
+  var toolbar = renderToolbar();
+  ok( toolbar.isEmpty() == true, "Passed!" );
+});

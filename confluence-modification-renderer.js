@@ -12,3 +12,10 @@ function renderVersion(renderedVersion) {
     }
   });
 }
+function renderToolbar() {
+  return {
+    isEmpty: function() {
+      return true;
+    }
+  };
+}
