@@ -50,3 +50,8 @@ test( "No modification toolbar if no div with specific attributes", function() {
   var toolbar = renderToolbar();
   ok( toolbar.isEmpty() == true, "Passed!" );
 });
+test( "Modification toolbar is available since div with specific attributes exist", function() {
+  setAttributes('add', 2);
+  var toolbar = renderToolbar();
+  ok( toolbar.isEmpty() == false, "Passed!" );
+});

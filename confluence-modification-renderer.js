@@ -13,9 +13,16 @@ function renderVersion(renderedVersion) {
   });
 }
 function renderToolbar() {
+  var empty = true;
+  $('div').each(function(index, element) {
+    var modifVersion = $(this).attr('modificationVersion');
+    if(modifVersion !== undefined && modifVersion != null && modifVersion != '') {
+      empty = false;
+    }
+  });
   return {
     isEmpty: function() {
-      return true;
+      return empty;
     }
   };
 }
