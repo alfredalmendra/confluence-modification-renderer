@@ -40,6 +40,15 @@ function renderToolbar() {
       input.setAttribute('onclick', 'renderVersion(' + version + ')');
       toolbarDiv.appendChild(input);
     }
+    for(var index = 0; index < versionList.length; index++) {
+      toolbarDiv.innerHTML += versionList[index];
+      var input = document.createElement('input')
+      input.setAttribute('type', 'checkbox');
+      input.setAttribute('name', 'modificationModifiedVersion');
+      input.setAttribute('value', versionList[index]);
+      input.setAttribute('onclick', 'renderCurrentVersion()');
+      toolbarDiv.appendChild(input);
+    }
     $("body").prepend(toolbarDiv);
   }
 }

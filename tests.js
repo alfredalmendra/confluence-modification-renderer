@@ -65,12 +65,13 @@ test( "Modification toolbar is available since div with specific attributes exis
   renderToolbar();
   var toolbarDiv = document.getElementById('modificationToolbarDiv');
   ok( toolbarDiv instanceof HTMLDivElement, "Passed!" );
-  var inputList =  toolbarDiv.getElementsByTagName("input");
-  ok( inputList.length == 2, "Passed!" );
-  for(var index = 0; index < inputList.length; index++) {
-    ok( inputList[index].getAttribute('type') == 'radio', "Passed!" );
-    ok( inputList[index].getAttribute('name') == 'modificationDisplayedVersion', "Passed!" );
-    ok( inputList[index].getAttribute('value') == (modifiedVersion - 1 + index), "Passed!" );
+  var displayedVersionInputList =  toolbarDiv.getElementsByTagName("input");
+  ok( displayedVersionInputList.length >= 2, "Passed!" );
+  displayedVersionInputList = document.getElementsByName('modificationDisplayedVersion');
+  for(var index = 0; index < displayedVersionInputList.length; index++) {
+    ok( displayedVersionInputList[index].getAttribute('type') == 'radio', "Passed!" );
+    ok( displayedVersionInputList[index].getAttribute('name') == 'modificationDisplayedVersion', "Passed!" );
+    ok( displayedVersionInputList[index].getAttribute('value') == (modifiedVersion - 1 + index), "Passed!" );
   }
   div2.remove();
 });
@@ -93,6 +94,22 @@ test( "Render the selected displayed version", function() {
   verifyRendering(div, false, "visible");
   verifyRendering(div2, true, "hidden");
   verifyRendering(div3, false, "visible");
+  div2.remove();
+  div3.remove();
+});
+test( "No modified version available int the toolbar if no div with specific attributes", function() {
+  renderToolbar();
+  ok( document.getElementsByName('modificationModifiedVersion').length == 0, "Passed!" );
+});
+test( "Modified versions are avaible in the toolbar", function() {
+  setAttributes(div, 'add', 5);
+  var div2 = addNewDiv();
+  setAttributes(div2, 'delete', 2);
+  var div3 = addNewDiv();
+  setAttributes(div3, 'add', 7);
+  renderToolbar();
+  var modifiedVersions = document.getElementsByName('modificationModifiedVersion');
+  ok( modifiedVersions.length == 3, "Passed!" );
   div2.remove();
   div3.remove();
 });
