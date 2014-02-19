@@ -6,6 +6,8 @@ module( "Div rendering", {
   },
   teardown: function() {
     div.remove();
+    var toolbarDiv = document.getElementById('modificationToolbarDiv');
+    if(toolbarDiv != null) toolbarDiv.remove();
   }
 });
 function setAttributes(modificationAction, modificationVersion) {
@@ -52,9 +54,17 @@ test( "No modification toolbar if no div with specific attributes", function() {
   ok( (toolbarDiv instanceof HTMLDivElement) == false, "Passed!" );
 });
 test( "Modification toolbar is available since div with specific attributes exist", function() {
-  setAttributes('add', 2);
-  setAttributes('delete', 2);
+  var modifiedVersion = 2;
+  setAttributes('add', modifiedVersion);
+  setAttributes('delete', modifiedVersion);
   renderToolbar();
   var toolbarDiv = document.getElementById('modificationToolbarDiv');
   ok( toolbarDiv instanceof HTMLDivElement, "Passed!" );
+  var inputList =  toolbarDiv.getElementsByTagName("input");
+  ok( inputList.length == 2, "Passed!" );
+  for(var index = 0; index < inputList.length; index++) {
+    ok( inputList[index].getAttribute('type') == 'radio', "Passed!" );
+    ok( inputList[index].getAttribute('name') == 'modificationDisplayedVersion', "Passed!" );
+    ok( inputList[index].getAttribute('value') == (modifiedVersion - 1 + index), "Passed!" );
+  }
 });
