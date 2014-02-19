@@ -20,15 +20,9 @@ function renderToolbar() {
       versionList.push(modifVersion);
     }
   });
-  return {
-    isEmpty: function() {
-      return this.length() == 0;
-    },
-    length: function() {
-      return versionList.length;
-    },
-    versions: function() {
-      return versionList;
-    }
-  };
+  if(versionList.length > 0) {
+    var toolbarDiv = document.createElement('div');
+    toolbarDiv.setAttribute('id', 'modificationToolbarDiv');
+    $("body").prepend(toolbarDiv);
+  }
 }

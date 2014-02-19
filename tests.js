@@ -47,15 +47,14 @@ test( "Div added in version 2 is visible while reading version 2", function() {
   verifyRendering(false, "visible");
 });
 test( "No modification toolbar if no div with specific attributes", function() {
-  var toolbar = renderToolbar();
-  ok( toolbar.isEmpty() == true, "Passed!" );
-  ok( toolbar.length() == 0, "Passed!" );
+  renderToolbar();
+  var toolbarDiv = document.getElementById('modificationToolbarDiv');
+  ok( (toolbarDiv instanceof HTMLDivElement) == false, "Passed!" );
 });
 test( "Modification toolbar is available since div with specific attributes exist", function() {
   setAttributes('add', 2);
   setAttributes('delete', 2);
-  var toolbar = renderToolbar();
-  ok( toolbar.isEmpty() == false, "Passed!" );
-  ok( toolbar.length() == 1, "Passed!" );
-  ok( toolbar.versions() == 2, "Passed!" );
+  renderToolbar();
+  var toolbarDiv = document.getElementById('modificationToolbarDiv');
+  ok( toolbarDiv instanceof HTMLDivElement, "Passed!" );
 });
