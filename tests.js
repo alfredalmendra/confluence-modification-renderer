@@ -118,3 +118,19 @@ test( "Modified versions are available in the toolbar", function() {
   div2.remove();
   div3.remove();
 });
+test( "Hightlight modifications of checked versions", function() {
+  setAttributes(div, 'add', 3);
+  renderToolbar();
+  document.getElementsByName('modificationDisplayedVersion')[0].click();
+  verifyRendering(div, true, "hidden");
+  document.getElementsByName('modificationModifiedVersion')[0].click();
+  verifyRendering(div, false, "hightlighted");
+  document.getElementsByName('modificationModifiedVersion')[0].click();
+  verifyRendering(div, true, "hidden");
+  document.getElementsByName('modificationDisplayedVersion')[1].click();
+  verifyRendering(div, false, "visible");
+  document.getElementsByName('modificationModifiedVersion')[0].click();
+  verifyRendering(div, false, "hightlighted");
+  document.getElementsByName('modificationModifiedVersion')[0].click();
+  verifyRendering(div, false, "visible");
+});

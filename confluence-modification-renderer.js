@@ -1,8 +1,23 @@
+function getRadioValue(theRadioGroup) {
+  var elements = document.getElementsByName(theRadioGroup);
+  for (var index = 0, len = elements.length; index < len; index++) {
+    if (elements[index].checked) {
+      return elements[index].value;
+    }
+  }
+}
+function renderCurrentVersion() {
+  renderVersion(getRadioValue('modificationDisplayedVersion'));
+}
 function renderVersion(renderedVersion) {
   $('div').each(function(index, element) {
     var modifAction = $(this).attr('modificationAction');
     var modifVersion = $(this).attr('modificationVersion');
-    if( (modifAction == 'add' && modifVersion > renderedVersion)
+    var versionCheckbox = document.getElementById('modificationModifiedVersion' + modifVersion);
+    if(versionCheckbox != null && versionCheckbox.checked) {
+      $(this).attr('renderStyle', 'hightlighted');
+      $(this).attr('hidden', false);
+    } else if( (modifAction == 'add' && modifVersion > renderedVersion)
         || (modifAction == 'delete' && modifVersion <= renderedVersion) ) {
       $(this).attr('renderStyle', 'hidden');
       $(this).attr('hidden', true);
@@ -46,6 +61,7 @@ function renderToolbar() {
       toolbarDiv.innerHTML += versionList[index];
       var input = document.createElement('input')
       input.setAttribute('type', 'checkbox');
+      input.setAttribute('id', 'modificationModifiedVersion' + versionList[index]);
       input.setAttribute('name', 'modificationModifiedVersion');
       input.setAttribute('value', versionList[index]);
       input.setAttribute('onclick', 'renderCurrentVersion()');
