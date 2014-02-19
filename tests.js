@@ -79,20 +79,23 @@ test( "Modification toolbar is available since div with specific attributes exis
   }
   div2.remove();
 });
+function clickOn(groupName, version) {
+  document.getElementById(groupName + version).click();
+}
 test( "Render the selected displayed version", function() {
   setAttributes(div, STR.ADD, 2);
   var div2 = addNewDivWithAttributes(STR.DELETE, 4);
   var div3 = addNewDivWithAttributes(STR.ADD, 8);
   renderToolbar();
-  document.getElementsByName(STR.DISPLAYED_VERSION)[2].click();
+  clickOn(STR.DISPLAYED_VERSION, 3);
   verifyRendering(div, false, STR.VISIBLE);
   verifyRendering(div2, false, STR.VISIBLE);
   verifyRendering(div3, true, STR.HIDDEN);
-  document.getElementsByName(STR.DISPLAYED_VERSION)[3].click();
+  clickOn(STR.DISPLAYED_VERSION, 4);
   verifyRendering(div, false, STR.VISIBLE);
   verifyRendering(div2, true, STR.HIDDEN);
   verifyRendering(div3, true, STR.HIDDEN);
-  document.getElementsByName(STR.DISPLAYED_VERSION)[7].click();
+  clickOn(STR.DISPLAYED_VERSION, 8);
   verifyRendering(div, false, STR.VISIBLE);
   verifyRendering(div2, true, STR.HIDDEN);
   verifyRendering(div3, false, STR.VISIBLE);
@@ -121,16 +124,16 @@ test( "Modified versions are available in the toolbar", function() {
 test( "Hightlight modifications of checked versions", function() {
   setAttributes(div, STR.ADD, 3);
   renderToolbar();
-  document.getElementsByName(STR.DISPLAYED_VERSION)[0].click();
+  clickOn(STR.DISPLAYED_VERSION, 2);
   verifyRendering(div, true, STR.HIDDEN);
-  document.getElementsByName(STR.MODIFIED_VERSION)[0].click();
+  clickOn(STR.MODIFIED_VERSION, 3);
   verifyRendering(div, false, STR.HIGHLIGHTED);
-  document.getElementsByName(STR.MODIFIED_VERSION)[0].click();
+  clickOn(STR.MODIFIED_VERSION, 3);
   verifyRendering(div, true, STR.HIDDEN);
-  document.getElementsByName(STR.DISPLAYED_VERSION)[1].click();
+  clickOn(STR.DISPLAYED_VERSION, 3);
   verifyRendering(div, false, STR.VISIBLE);
-  document.getElementsByName(STR.MODIFIED_VERSION)[0].click();
+  clickOn(STR.MODIFIED_VERSION, 3);
   verifyRendering(div, false, STR.HIGHLIGHTED);
-  document.getElementsByName(STR.MODIFIED_VERSION)[0].click();
+  clickOn(STR.MODIFIED_VERSION, 3);
   verifyRendering(div, false, STR.VISIBLE);
 });
