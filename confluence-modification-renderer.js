@@ -22,13 +22,17 @@ function renderToolbar() {
   });
   if(versionList.length > 0) {
     versionList = _.uniq(versionList);
-    versionList.sort().unshift(versionList[0] - 1);
+    versionList.sort();
     var toolbarDiv = document.createElement('div');
     toolbarDiv.setAttribute('id', 'modificationToolbarDiv');
-    var minVersion = versionList[0];
+    var minVersion = versionList[0] - 1;
     var maxVersion = versionList[versionList.length - 1];
     for(var version = minVersion; version <= maxVersion; version++) {
-      toolbarDiv.innerHTML += version;
+      if(_.contains(versionList, version) || _.contains(versionList, '' + version)) {
+        toolbarDiv.innerHTML += '<b>' + version + '</b>';
+      } else {
+        toolbarDiv.innerHTML += version;
+      }
       var input = document.createElement('input')
       input.setAttribute('type', 'radio');
       input.setAttribute('name', 'modificationDisplayedVersion');
