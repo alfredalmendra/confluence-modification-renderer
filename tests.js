@@ -102,14 +102,19 @@ test( "No modified version available int the toolbar if no div with specific att
   ok( document.getElementsByName('modificationModifiedVersion').length == 0, "Passed!" );
 });
 test( "Modified versions are available in the toolbar", function() {
-  setAttributes(div, 'add', 5);
+  var modifiedVersions = [2, 5, 7];
+  setAttributes(div, 'add', modifiedVersions[1]);
   var div2 = addNewDiv();
-  setAttributes(div2, 'delete', 2);
+  setAttributes(div2, 'delete', modifiedVersions[0]);
   var div3 = addNewDiv();
-  setAttributes(div3, 'add', 7);
+  setAttributes(div3, 'add', modifiedVersions[2]);
   renderToolbar();
-  var modifiedVersions = document.getElementsByName('modificationModifiedVersion');
-  ok( modifiedVersions.length == 3, "Passed!" );
+  var modifiedVersionInputList = document.getElementsByName('modificationModifiedVersion');
+  ok( modifiedVersionInputList.length == 3, "Passed!" );
+  for(var index = 0; index < modifiedVersionInputList.length; index++) {
+    ok( modifiedVersionInputList[index].getAttribute('type') == 'checkbox', "Passed!" );
+    ok( modifiedVersionInputList[index].getAttribute('value') == modifiedVersions[index], "Passed!" );
+  }
   div2.remove();
   div3.remove();
 });
