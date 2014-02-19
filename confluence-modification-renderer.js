@@ -25,12 +25,15 @@ function renderToolbar() {
     versionList.sort().unshift(versionList[0] - 1);
     var toolbarDiv = document.createElement('div');
     toolbarDiv.setAttribute('id', 'modificationToolbarDiv');
-    for(var index = 0; index < versionList.length; index++) {
-      toolbarDiv.innerHTML += versionList[index];
+    var minVersion = versionList[0];
+    var maxVersion = versionList[versionList.length - 1];
+    for(var version = minVersion; version <= maxVersion; version++) {
+      toolbarDiv.innerHTML += version;
       var input = document.createElement('input')
       input.setAttribute('type', 'radio');
       input.setAttribute('name', 'modificationDisplayedVersion');
-      input.setAttribute('value', versionList[index]);
+      input.setAttribute('value', version);
+      input.setAttribute('onclick', 'renderVersion(' + version + ')');
       toolbarDiv.appendChild(input);
     }
     $("body").prepend(toolbarDiv);

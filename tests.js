@@ -1,8 +1,7 @@
 var div;
 module( "Div rendering", {
   setup: function() {
-    div = document.createElement('div');
-    document.body.appendChild(div);
+    div = addNewDiv();
   },
   teardown: function() {
     div.remove();
@@ -10,13 +9,18 @@ module( "Div rendering", {
     if(toolbarDiv != null) toolbarDiv.remove();
   }
 });
-function setAttributes(modificationAction, modificationVersion) {
-  div.setAttribute('modificationAction', modificationAction);
-  div.setAttribute('modificationVersion', modificationVersion);
+function addNewDiv() {
+  var newDiv = document.createElement('div');
+  document.body.appendChild(newDiv);
+  return newDiv;
 }
-function verifyRendering(hidden, renderStyle) {
-  ok( div.hidden == hidden, "Passed!" );
-  ok( div.getAttribute('renderStyle') == renderStyle, "Passed!" );
+function setAttributes(element, modificationAction, modificationVersion) {
+  element.setAttribute('modificationAction', modificationAction);
+  element.setAttribute('modificationVersion', modificationVersion);
+}
+function verifyRendering(element, hidden, renderStyle) {
+  ok( element.hidden == hidden, "Passed!" );
+  ok( element.getAttribute('renderStyle') == renderStyle, "Passed!" );
 }
 test( "Div with no specific attributes remains unchanged", function() {
   renderVersion(1);
@@ -24,29 +28,29 @@ test( "Div with no specific attributes remains unchanged", function() {
   ok( div.hasAttribute('renderStyle') == false, "Passed!" );
 });
 test( "Div added in version 2 is hidden while reading version 1", function() {
-  setAttributes('add', 2);
+  setAttributes(div, 'add', 2);
   renderVersion(1);
-  verifyRendering(true, "hidden");
+  verifyRendering(div, true, "hidden");
 });
 test( "Div deleted in version 1 is hidden while reading version 2", function() {
-  setAttributes('delete', 1);
+  setAttributes(div, 'delete', 1);
   renderVersion(2);
-  verifyRendering(true, "hidden");
+  verifyRendering(div, true, "hidden");
 });
 test( "Div deleted in version 1 is hidden while reading version 1", function() {
-  setAttributes('delete', 1);
+  setAttributes(div, 'delete', 1);
   renderVersion(1);
-  verifyRendering(true, "hidden");
+  verifyRendering(div, true, "hidden");
 });
 test( "Div deleted in version 2 is visible while reading version 1", function() {
-  setAttributes('delete', 2);
+  setAttributes(div, 'delete', 2);
   renderVersion(1);
-  verifyRendering(false, "visible");
+  verifyRendering(div, false, "visible");
 });
 test( "Div added in version 2 is visible while reading version 2", function() {
-  setAttributes('add', 2);
+  setAttributes(div, 'add', 2);
   renderVersion(2);
-  verifyRendering(false, "visible");
+  verifyRendering(div, false, "visible");
 });
 test( "No modification toolbar if no div with specific attributes", function() {
   renderToolbar();
@@ -55,8 +59,9 @@ test( "No modification toolbar if no div with specific attributes", function() {
 });
 test( "Modification toolbar is available since div with specific attributes exist", function() {
   var modifiedVersion = 2;
-  setAttributes('add', modifiedVersion);
-  setAttributes('delete', modifiedVersion);
+  setAttributes(div, 'add', modifiedVersion);
+  var div2 = addNewDiv();
+  setAttributes(div2, 'delete', modifiedVersion);
   renderToolbar();
   var toolbarDiv = document.getElementById('modificationToolbarDiv');
   ok( toolbarDiv instanceof HTMLDivElement, "Passed!" );
@@ -67,4 +72,28 @@ test( "Modification toolbar is available since div with specific attributes exis
     ok( inputList[index].getAttribute('name') == 'modificationDisplayedVersion', "Passed!" );
     ok( inputList[index].getAttribute('value') == (modifiedVersion - 1 + index), "Passed!" );
   }
+  div2.remove();
+});
+test( "Render the selected displayed version", function() {
+  setAttributes(div, 'add', 2);
+  var div2 = addNewDiv();
+  setAttributes(div2, 'delete', 4);
+  var div3 = addNewDiv();
+  setAttributes(div3, 'add', 8);
+  renderToolbar();
+  var toolbarDiv = document.getElementById('modificationToolbarDiv');
+  toolbarDiv.getElementsByTagName('input')[2].click();
+  verifyRendering(div, false, "visible");
+  verifyRendering(div2, false, "visible");
+  verifyRendering(div3, true, "hidden");
+  toolbarDiv.getElementsByTagName('input')[3].click();
+  verifyRendering(div, false, "visible");
+  verifyRendering(div2, true, "hidden");
+  verifyRendering(div3, true, "hidden");
+  toolbarDiv.getElementsByTagName('input')[7].click();
+  verifyRendering(div, false, "visible");
+  verifyRendering(div2, true, "hidden");
+  verifyRendering(div3, false, "visible");
+  div2.remove();
+  div3.remove();
 });
