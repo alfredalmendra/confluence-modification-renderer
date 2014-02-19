@@ -39,6 +39,15 @@ function renderVersion(renderedVersion) {
     }
   });
 }
+function createInput(type, name, value, onclick) {
+  var input = document.createElement('input')
+  input.setAttribute('type', type);
+  input.setAttribute('id', name + value);
+  input.setAttribute('name', name);
+  input.setAttribute('value', value);
+  input.setAttribute('onclick', onclick);
+  return input;
+}
 function renderToolbar() {
   var versionList = [];
   $('div').each(function(index, element) {
@@ -61,23 +70,12 @@ function renderToolbar() {
       } else {
         toolbarDiv.innerHTML += version;
       }
-      var input = document.createElement('input')
-      input.setAttribute('type', 'radio');
-      input.setAttribute('name', STR.DISPLAYED_VERSION);
-      input.setAttribute('value', version);
-      input.setAttribute('onclick', 'renderVersion(' + version + ')');
-      toolbarDiv.appendChild(input);
+      toolbarDiv.appendChild(createInput('radio', STR.DISPLAYED_VERSION, version, 'renderVersion(' + version + ')'));
     }
     toolbarDiv.innerHTML += ' - Highlight modifications : ';
     for(var index = 0; index < versionList.length; index++) {
       toolbarDiv.innerHTML += versionList[index];
-      var input = document.createElement('input')
-      input.setAttribute('type', 'checkbox');
-      input.setAttribute('id', STR.MODIFIED_VERSION + versionList[index]);
-      input.setAttribute('name', STR.MODIFIED_VERSION);
-      input.setAttribute('value', versionList[index]);
-      input.setAttribute('onclick', 'renderCurrentVersion()');
-      toolbarDiv.appendChild(input);
+      toolbarDiv.appendChild(createInput('checkbox', STR.MODIFIED_VERSION, versionList[index], 'renderCurrentVersion()'));
     }
     $("body").prepend(toolbarDiv);
   }
