@@ -25,6 +25,7 @@ function renderToolbar() {
     versionList.sort();
     var toolbarDiv = document.createElement('div');
     toolbarDiv.setAttribute('id', 'modificationToolbarDiv');
+    toolbarDiv.innerHTML += 'Current version : ';
     var minVersion = versionList[0] - 1;
     var maxVersion = versionList[versionList.length - 1];
     for(var version = minVersion; version <= maxVersion; version++) {
@@ -40,6 +41,7 @@ function renderToolbar() {
       input.setAttribute('onclick', 'renderVersion(' + version + ')');
       toolbarDiv.appendChild(input);
     }
+    toolbarDiv.innerHTML += ' - Highlight modifications : ';
     for(var index = 0; index < versionList.length; index++) {
       toolbarDiv.innerHTML += versionList[index];
       var input = document.createElement('input')
