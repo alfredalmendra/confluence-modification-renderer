@@ -70,7 +70,6 @@ test( "Modification toolbar is available since div with specific attributes exis
   displayedVersionInputList = document.getElementsByName(STR.DISPLAYED_VERSION);
   for(var index = 0; index < displayedVersionInputList.length; index++) {
     ok( displayedVersionInputList[index].getAttribute('type') == 'radio', "Passed!" );
-    ok( displayedVersionInputList[index].getAttribute('name') == STR.DISPLAYED_VERSION, "Passed!" );
     ok( displayedVersionInputList[index].getAttribute('value') == (modifiedVersion - 1 + index), "Passed!" );
   }
   div2.remove();
