@@ -82,23 +82,20 @@ test( "Modification toolbar is available since div with specific attributes exis
 function clickOn(groupName, version) {
   document.getElementById(groupName + version).click();
 }
+function clickOnAndVerify3Div(groupName, version, element1, hidden1, renderStyle1, element2, hidden2, renderStyle2, element3, hidden3, renderStyle3) {
+  clickOn(groupName, version);
+  verifyRendering(element1, hidden1, renderStyle1);
+  verifyRendering(element2, hidden2, renderStyle2);
+  verifyRendering(element3, hidden3, renderStyle3);
+}
 test( "Render the selected displayed version", function() {
   setAttributes(div, STR.ADD, 2);
   var div2 = addNewDivWithAttributes(STR.DELETE, 4);
   var div3 = addNewDivWithAttributes(STR.ADD, 8);
   renderToolbar();
-  clickOn(STR.DISPLAYED_VERSION, 3);
-  verifyRendering(div, false, STR.VISIBLE);
-  verifyRendering(div2, false, STR.VISIBLE);
-  verifyRendering(div3, true, STR.HIDDEN);
-  clickOn(STR.DISPLAYED_VERSION, 4);
-  verifyRendering(div, false, STR.VISIBLE);
-  verifyRendering(div2, true, STR.HIDDEN);
-  verifyRendering(div3, true, STR.HIDDEN);
-  clickOn(STR.DISPLAYED_VERSION, 8);
-  verifyRendering(div, false, STR.VISIBLE);
-  verifyRendering(div2, true, STR.HIDDEN);
-  verifyRendering(div3, false, STR.VISIBLE);
+  clickOnAndVerify3Div(STR.DISPLAYED_VERSION, 3, div, false, STR.VISIBLE, div2, false, STR.VISIBLE, div3, true, STR.HIDDEN);
+  clickOnAndVerify3Div(STR.DISPLAYED_VERSION, 4, div, false, STR.VISIBLE, div2, true, STR.HIDDEN, div3, true, STR.HIDDEN);
+  clickOnAndVerify3Div(STR.DISPLAYED_VERSION, 8, div, false, STR.VISIBLE, div2, true, STR.HIDDEN, div3, false, STR.VISIBLE);
   div2.remove();
   div3.remove();
 });
