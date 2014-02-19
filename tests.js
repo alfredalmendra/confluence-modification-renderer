@@ -101,7 +101,7 @@ test( "No modified version available int the toolbar if no div with specific att
   renderToolbar();
   ok( document.getElementsByName('modificationModifiedVersion').length == 0, "Passed!" );
 });
-test( "Modified versions are avaible in the toolbar", function() {
+test( "Modified versions are available in the toolbar", function() {
   setAttributes(div, 'add', 5);
   var div2 = addNewDiv();
   setAttributes(div2, 'delete', 2);
