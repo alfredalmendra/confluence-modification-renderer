@@ -14,6 +14,11 @@ function addNewDiv() {
   document.body.appendChild(newDiv);
   return newDiv;
 }
+function addNewDivWithAttributes(modificationAction, modificationVersion) {
+  var newDiv = addNewDiv();
+  setAttributes(newDiv, modificationAction, modificationVersion);
+  return newDiv;
+}
 function setAttributes(element, modificationAction, modificationVersion) {
   element.setAttribute(STR.ACTION, modificationAction);
   element.setAttribute(STR.VERSION, modificationVersion);
@@ -60,8 +65,7 @@ test( "No modification toolbar if no div with specific attributes", function() {
 test( "Modification toolbar is available since div with specific attributes exist", function() {
   var modifiedVersion = 2;
   setAttributes(div, STR.ADD, modifiedVersion);
-  var div2 = addNewDiv();
-  setAttributes(div2, STR.DELETE, modifiedVersion);
+  var div2 = addNewDivWithAttributes(STR.DELETE, modifiedVersion);
   renderToolbar();
   var toolbarDiv = document.getElementById(STR.TOOLBAR);
   ok( toolbarDiv instanceof HTMLDivElement, "Passed!" );
@@ -76,10 +80,8 @@ test( "Modification toolbar is available since div with specific attributes exis
 });
 test( "Render the selected displayed version", function() {
   setAttributes(div, STR.ADD, 2);
-  var div2 = addNewDiv();
-  setAttributes(div2, STR.DELETE, 4);
-  var div3 = addNewDiv();
-  setAttributes(div3, STR.ADD, 8);
+  var div2 = addNewDivWithAttributes(STR.DELETE, 4);
+  var div3 = addNewDivWithAttributes(STR.ADD, 8);
   renderToolbar();
   document.getElementsByName(STR.DISPLAYED_VERSION)[2].click();
   verifyRendering(div, false, STR.VISIBLE);
@@ -103,10 +105,8 @@ test( "No modified version available int the toolbar if no div with specific att
 test( "Modified versions are available in the toolbar", function() {
   var modifiedVersions = [2, 5, 7];
   setAttributes(div, STR.ADD, modifiedVersions[1]);
-  var div2 = addNewDiv();
-  setAttributes(div2, STR.DELETE, modifiedVersions[0]);
-  var div3 = addNewDiv();
-  setAttributes(div3, STR.ADD, modifiedVersions[2]);
+  var div2 = addNewDivWithAttributes(STR.DELETE, modifiedVersions[0]);
+  var div3 = addNewDivWithAttributes(STR.ADD, modifiedVersions[2]);
   renderToolbar();
   var modifiedVersionInputList = document.getElementsByName(STR.MODIFIED_VERSION);
   ok( modifiedVersionInputList.length == 3, "Passed!" );
