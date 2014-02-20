@@ -1,4 +1,6 @@
 STR = {
+  get TITLE_CURRENT_VERSION() { return 'Current version'; },
+  get TITLE_HIGHLIGHT_MODIFICATIONS() { return 'Highlight modifications'; },
   get ADD() { return 'add'; },
   get DELETE() { return 'delete'; },
   get TOOLBAR() { return 'modificationToolbarDiv'; },
@@ -67,7 +69,7 @@ function renderToolbar() {
     versionList.sort();
     var toolbarDiv = document.createElement('div');
     toolbarDiv.setAttribute('id', STR.TOOLBAR);
-    toolbarDiv.innerHTML += 'Current version : ';
+    toolbarDiv.innerHTML += STR.TITLE_CURRENT_VERSION + ' : ';
     var minVersion = versionList[0] - 1;
     var maxVersion = versionList[versionList.length - 1];
     for(var version = minVersion; version <= maxVersion; version++) {
@@ -78,7 +80,7 @@ function renderToolbar() {
       }
       toolbarDiv.appendChild(createInput('radio', STR.DISPLAYED_VERSION, version, 'renderVersion(' + version + ')'));
     }
-    toolbarDiv.innerHTML += ' - Highlight modifications : ';
+    toolbarDiv.innerHTML += ' - ' + STR.TITLE_HIGHLIGHT_MODIFICATIONS + ' : ';
     for(var index = 0; index < versionList.length; index++) {
       toolbarDiv.innerHTML += versionList[index];
       toolbarDiv.appendChild(createInput('checkbox', STR.MODIFIED_VERSION, versionList[index], 'renderCurrentVersion()'));
