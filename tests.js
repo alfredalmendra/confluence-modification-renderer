@@ -27,6 +27,12 @@ function verifyRendering(element, hidden, renderStyle) {
   ok( element.hidden == hidden, "Passed!" );
   ok( element.getAttribute('renderStyle') == renderStyle, "Passed!" );
 }
+function verifyRenderingAndColors(element, hidden, renderStyle, backgroundColor) {
+  verifyRendering(element, hidden, renderStyle);
+  var style = getComputedStyle(element);
+  var elementBackgroundColor = style.getPropertyValue('background-color');
+  ok( elementBackgroundColor == backgroundColor, "Passed!" );
+}
 test( "Div with no specific attributes remains unchanged", function() {
   renderVersion(1);
   ok( div.hidden == false, "Passed!" );
@@ -118,70 +124,34 @@ test( "Modified versions are available in the toolbar", function() {
   div2.remove();
   div3.remove();
 });
-test( "Hightlight modifications of checked versions", function() {
+test( "Hightlight background colors", function() {
   setAttributes(div, STR.ADD, 3);
-  var div2 = addNewDivWithAttributes(STR.DELETE, 4);
+  var div2 = addNewDivWithAttributes(STR.DELETE, 3);
   renderToolbar();
   
   clickOn(STR.DISPLAYED_VERSION, 2);
-  verifyRendering(div, true, STR.HIDDEN);
-  verifyRendering(div2, false, STR.VISIBLE);
-  var style = getComputedStyle(div);
-  ok( style.getPropertyValue('background-color') == null || style.getPropertyValue('background-color') == 'transparent', "Passed!" );
-  //ok( style.getPropertyValue('border-color') == null || style.getPropertyValue('border-color') == '', "Passed!" );
-  var style2 = getComputedStyle(div2);
-  ok( style2.getPropertyValue('background-color') == null || style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
-  //ok( style2.getPropertyValue('border-color') == null || style2.getPropertyValue('border-color') == '', "Passed!" );
+  verifyRenderingAndColors(div, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(div2, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   
   clickOn(STR.MODIFIED_VERSION, 3);
-  verifyRendering(div, false, STR.HIGHLIGHTED);
-  verifyRendering(div2, false, STR.VISIBLE);
-  style = getComputedStyle(div);
-  ok( style.getPropertyValue('background-color') == 'rgb(224, 238, 224)', "Passed!" );
-  //ok( style.getPropertyValue('border-color') == 'rgb(48, 187, 48)', "Passed!" );
-  style2 = getComputedStyle(div2);
-  ok( style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
-  //ok( style2.getPropertyValue('border-color') == '', "Passed!" );
+  verifyRendering(div, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_ADD);
+  verifyRendering(div2, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_DELETE);
   
   clickOn(STR.MODIFIED_VERSION, 3);
-  verifyRendering(div, true, STR.HIDDEN);
-  verifyRendering(div2, false, STR.VISIBLE);
-  style = getComputedStyle(div);
-  ok( style.getPropertyValue('background-color') == null || style.getPropertyValue('background-color') == 'transparent', "Passed!" );
-  //ok( style.getPropertyValue('border-color') == null || style.getPropertyValue('border-color') == '', "Passed!" );
-  style2 = getComputedStyle(div2);
-  ok( style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
-  //ok( style2.getPropertyValue('border-color') == '', "Passed!" );
+  verifyRendering(div, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  verifyRendering(div2, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   
   clickOn(STR.DISPLAYED_VERSION, 3);
-  verifyRendering(div, false, STR.VISIBLE);
-  verifyRendering(div2, false, STR.VISIBLE);
-  style = getComputedStyle(div);
-  ok( style.getPropertyValue('background-color') == null || style.getPropertyValue('background-color') == 'transparent', "Passed!" );
-  //ok( style.getPropertyValue('border-color') == null || style.getPropertyValue('border-color') == '', "Passed!" );
-  style2 = getComputedStyle(div2);
-  ok( style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
-  //ok( style2.getPropertyValue('border-color') == '', "Passed!" );
+  verifyRenderingAndColors(div, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(div2, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
   
   clickOn(STR.MODIFIED_VERSION, 3);
-  verifyRendering(div, false, STR.HIGHLIGHTED);
-  verifyRendering(div2, false, STR.VISIBLE);
-  style = getComputedStyle(div);
-  ok( style.getPropertyValue('background-color') == 'rgb(224, 238, 224)', "Passed!" );
-  //ok( style.getPropertyValue('border-color') == 'rgb(48, 187, 48)', "Passed!" );
-  style2 = getComputedStyle(div2);
-  ok( style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
-  //ok( style2.getPropertyValue('border-color') == '', "Passed!" );
+  verifyRendering(div, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_ADD);
+  verifyRendering(div2, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_DELETE);
   
   clickOn(STR.MODIFIED_VERSION, 3);
-  verifyRendering(div, false, STR.VISIBLE);
-  verifyRendering(div2, false, STR.VISIBLE);
-  style = getComputedStyle(div);
-  ok( style.getPropertyValue('background-color') == null || style.getPropertyValue('background-color') == 'transparent', "Passed!" );
-  //ok( style.getPropertyValue('border-color') == null || style.getPropertyValue('border-color') == '', "Passed!" );
-  style2 = getComputedStyle(div2);
-  ok( style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
-  //ok( style2.getPropertyValue('border-color') == '', "Passed!" );
+  verifyRendering(div, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  verifyRendering(div2, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
   
   div2.remove();
 });

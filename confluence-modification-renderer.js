@@ -10,7 +10,11 @@ STR = {
   get VERSION() { return 'modificationVersion'; },
   get HIDDEN() { return 'hidden'; },
   get VISIBLE() { return 'visible'; },
-  get HIGHLIGHTED() { return 'hightlighted'; }
+  get HIGHLIGHTED() { return 'hightlighted'; },
+  get BACKGROUND_COLOR_NONE() { return 'transparent'; },
+  get BACKGROUND_COLOR_ADD() { return 'rgb(224, 238, 224)'; },
+  get BACKGROUND_COLOR_DELETE() { return 'rgb(238, 224, 224)'; },
+  get BACKGROUND_COLOR_OTHER() { return 'rgb(224, 224, 238)'; }
 }
 function getRadioValue(theRadioGroup) {
   var elements = document.getElementsByName(theRadioGroup);
@@ -31,8 +35,14 @@ function renderVersion(renderedVersion) {
     if(versionCheckbox != null && versionCheckbox.checked) {
       $(this).attr('renderStyle', STR.HIGHLIGHTED);
       $(this).attr('hidden', false);
-      $(this).css('background-color', 'rgb(224, 238, 224)');
-      //$(this).css('border-color', 'rgb(48, 187, 48)');
+      if(modifAction == STR.ADD) {
+        $(this).css('background-color', STR.BACKGROUND_COLOR_ADD);
+        //$(this).css('border-color', 'rgb(48, 187, 48)');
+      } else if(modifAction == STR.DELETE) {
+        $(this).css('background-color', STR.BACKGROUND_COLOR_DELETE);
+      } else {
+        $(this).css('background-color', STR.BACKGROUND_COLOR_OTHER);
+      }
     } else if( (modifAction == STR.ADD && modifVersion > renderedVersion)
         || (modifAction == STR.DELETE && modifVersion <= renderedVersion) ) {
       $(this).attr('renderStyle', STR.HIDDEN);
