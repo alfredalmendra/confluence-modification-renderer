@@ -127,31 +127,48 @@ test( "Modified versions are available in the toolbar", function() {
 test( "Hightlight background colors", function() {
   setAttributes(div, STR.ADD, 3);
   var div2 = addNewDivWithAttributes(STR.DELETE, 3);
+  var div3 = addNewDivWithAttributes('unknown', 3);
+  var div4 = addNewDiv();
+  div4.setAttribute(STR.VERSION, 3);
   renderToolbar();
   
   clickOn(STR.DISPLAYED_VERSION, 2);
   verifyRenderingAndColors(div, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
   verifyRenderingAndColors(div2, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(div3, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(div4, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   
   clickOn(STR.MODIFIED_VERSION, 3);
   verifyRendering(div, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_ADD);
   verifyRendering(div2, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_DELETE);
+  verifyRenderingAndColors(div3, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_OTHER);
+  verifyRenderingAndColors(div4, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_OTHER);
   
   clickOn(STR.MODIFIED_VERSION, 3);
   verifyRendering(div, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
   verifyRendering(div2, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(div3, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(div4, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   
   clickOn(STR.DISPLAYED_VERSION, 3);
   verifyRenderingAndColors(div, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   verifyRenderingAndColors(div2, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(div3, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(div4, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   
   clickOn(STR.MODIFIED_VERSION, 3);
   verifyRendering(div, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_ADD);
   verifyRendering(div2, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_DELETE);
+  verifyRenderingAndColors(div3, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_OTHER);
+  verifyRenderingAndColors(div4, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_OTHER);
   
   clickOn(STR.MODIFIED_VERSION, 3);
   verifyRendering(div, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   verifyRendering(div2, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(div3, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(div4, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   
   div2.remove();
+  div3.remove();
+  div4.remove();
 });

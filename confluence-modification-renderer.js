@@ -12,9 +12,9 @@ STR = {
   get VISIBLE() { return 'visible'; },
   get HIGHLIGHTED() { return 'hightlighted'; },
   get BACKGROUND_COLOR_NONE() { return 'transparent'; },
-  get BACKGROUND_COLOR_ADD() { return 'rgb(224, 238, 224)'; },
-  get BACKGROUND_COLOR_DELETE() { return 'rgb(238, 224, 224)'; },
-  get BACKGROUND_COLOR_OTHER() { return 'rgb(224, 224, 238)'; }
+  get BACKGROUND_COLOR_ADD() { return 'rgb(200, 240, 200)'; },
+  get BACKGROUND_COLOR_DELETE() { return 'rgb(240, 200, 200)'; },
+  get BACKGROUND_COLOR_OTHER() { return 'rgb(200, 200, 240)'; }
 }
 function getRadioValue(theRadioGroup) {
   var elements = document.getElementsByName(theRadioGroup);
@@ -47,12 +47,12 @@ function renderVersion(renderedVersion) {
         || (modifAction == STR.DELETE && modifVersion <= renderedVersion) ) {
       $(this).attr('renderStyle', STR.HIDDEN);
       $(this).attr('hidden', true);
-      $(this).css('background-color', 'transparent');
+      $(this).css('background-color', STR.BACKGROUND_COLOR_NONE);
       //$(this).css('border-color', '');
-    } else if(modifAction !== undefined && modifVersion !== undefined) {
+    } else if(modifVersion !== undefined) {
       $(this).attr('renderStyle', STR.VISIBLE);
       $(this).attr('hidden', false);
-      $(this).css('background-color', 'transparent');
+      $(this).css('background-color', STR.BACKGROUND_COLOR_NONE);
       //$(this).css('border-color', '');
     }
   });
