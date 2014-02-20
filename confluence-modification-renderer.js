@@ -1,13 +1,16 @@
 STR = {
   get TITLE_CURRENT_VERSION() { return 'Current version'; },
   get TITLE_HIGHLIGHT_MODIFICATIONS() { return 'Highlight modifications'; },
+  get TITLE_TEAM() { return 'Team'; },
   get ADD() { return 'add'; },
   get DELETE() { return 'delete'; },
   get TOOLBAR() { return 'modificationToolbarDiv'; },
   get DISPLAYED_VERSION() { return 'modificationDisplayedVersion'; },
   get MODIFIED_VERSION() { return 'modificationModifiedVersion'; },
+  get AUTHOR_TEAM() { return 'modificationAuthorTeam'; },
   get ACTION() { return 'modificationAction'; },
   get VERSION() { return 'modificationVersion'; },
+  get TEAM() { return 'modificationTeam'; },
   get HIDDEN() { return 'hidden'; },
   get VISIBLE() { return 'visible'; },
   get HIGHLIGHTED() { return 'hightlighted'; },
@@ -31,8 +34,21 @@ function renderVersion(renderedVersion) {
   $('div').each(function(index, element) {
     var modifAction = $(this).attr(STR.ACTION);
     var modifVersion = $(this).attr(STR.VERSION);
+    var modifTeam = $(this).attr(STR.TEAM);
+    
     var versionCheckbox = document.getElementById(STR.MODIFIED_VERSION + modifVersion);
-    if(versionCheckbox != null && versionCheckbox.checked) {
+    var teamCheckbox = document.getElementById(STR.AUTHOR_TEAM + modifTeam);
+    
+    var willBeHightlighted = (modifVersion == null || (versionCheckbox != null && versionCheckbox.checked));
+    willBeHightlighted = willBeHightlighted && (modifTeam == null || (teamCheckbox != null && teamCheckbox.checked));
+    willBeHightlighted = willBeHightlighted && (modifVersion != null || modifTeam != null);
+    
+    var willBeHidden = (modifAction == STR.ADD && modifVersion > renderedVersion)
+                       || (modifAction == STR.DELETE && modifVersion <= renderedVersion);
+    
+    var willBeShown = (modifVersion !== undefined || (modifVersion == null && modifTeam != null));
+    
+    if(willBeHightlighted) {
       $(this).attr('renderStyle', STR.HIGHLIGHTED);
       $(this).attr('hidden', false);
       if(modifAction == STR.ADD) {
@@ -43,13 +59,12 @@ function renderVersion(renderedVersion) {
       } else {
         $(this).css('background-color', STR.BACKGROUND_COLOR_OTHER);
       }
-    } else if( (modifAction == STR.ADD && modifVersion > renderedVersion)
-        || (modifAction == STR.DELETE && modifVersion <= renderedVersion) ) {
+    } else if(willBeHidden) {
       $(this).attr('renderStyle', STR.HIDDEN);
       $(this).attr('hidden', true);
       $(this).css('background-color', STR.BACKGROUND_COLOR_NONE);
       //$(this).css('border-color', '');
-    } else if(modifVersion !== undefined) {
+    } else if(willBeShown) {
       $(this).attr('renderStyle', STR.VISIBLE);
       $(this).attr('hidden', false);
       $(this).css('background-color', STR.BACKGROUND_COLOR_NONE);
@@ -66,19 +81,28 @@ function createInput(type, name, value, onclick) {
   input.setAttribute('onclick', onclick);
   return input;
 }
+function createToolbarDiv() {
+  var toolbarDiv = document.createElement('div');
+  toolbarDiv.setAttribute('id', STR.TOOLBAR);
+  return toolbarDiv;
+}
 function renderToolbar() {
   var versionList = [];
+  var teamList = [];
   $('div').each(function(index, element) {
     var modifVersion = $(this).attr(STR.VERSION);
     if(modifVersion !== undefined && modifVersion != null && modifVersion != '') {
       versionList.push(modifVersion);
     }
+    var modifTeam = $(this).attr(STR.TEAM);
+    if(modifTeam !== undefined && modifTeam != null && modifTeam != '') {
+      teamList.push(modifTeam);
+    }
   });
   if(versionList.length > 0) {
     versionList = _.uniq(versionList);
     versionList.sort();
-    var toolbarDiv = document.createElement('div');
-    toolbarDiv.setAttribute('id', STR.TOOLBAR);
+    var toolbarDiv = createToolbarDiv();
     toolbarDiv.innerHTML += STR.TITLE_CURRENT_VERSION + ' : ';
     var minVersion = versionList[0] - 1;
     var maxVersion = versionList[versionList.length - 1];
@@ -95,6 +119,19 @@ function renderToolbar() {
       toolbarDiv.innerHTML += versionList[index];
       toolbarDiv.appendChild(createInput('checkbox', STR.MODIFIED_VERSION, versionList[index], 'renderCurrentVersion()'));
     }
+  }
+  if(teamList.length > 0) {
+    if(toolbarDiv === undefined || toolbarDiv == null) {
+      toolbarDiv = createToolbarDiv();
+    }
+    teamList = _.uniq(teamList);
+    toolbarDiv.innerHTML += ' - ' + STR.TITLE_TEAM + ' : ';
+    for(var index = 0; index < teamList.length; index++) {
+      toolbarDiv.innerHTML += teamList[index];
+      toolbarDiv.appendChild(createInput('checkbox', STR.AUTHOR_TEAM, teamList[index], 'renderCurrentVersion()'));
+    }
+  }
+  if(toolbarDiv != null) {
     $("body").prepend(toolbarDiv);
   }
 }
