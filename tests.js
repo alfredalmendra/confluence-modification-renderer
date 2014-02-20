@@ -120,17 +120,69 @@ test( "Modified versions are available in the toolbar", function() {
 });
 test( "Hightlight modifications of checked versions", function() {
   setAttributes(div, 'add', 3);
+  var div2 = addNewDiv();
+  setAttributes(div2, 'delete', 4);
   renderToolbar();
+  
   document.getElementsByName('modificationDisplayedVersion')[0].click();
   verifyRendering(div, true, "hidden");
+  verifyRendering(div2, false, "visible");
+  var style = getComputedStyle(div);
+  ok( style.getPropertyValue('background-color') == null || style.getPropertyValue('background-color') == 'transparent', "Passed!" );
+  //ok( style.getPropertyValue('border-color') == null || style.getPropertyValue('border-color') == '', "Passed!" );
+  var style2 = getComputedStyle(div2);
+  ok( style2.getPropertyValue('background-color') == null || style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
+  //ok( style2.getPropertyValue('border-color') == null || style2.getPropertyValue('border-color') == '', "Passed!" );
+  
   document.getElementsByName('modificationModifiedVersion')[0].click();
   verifyRendering(div, false, "hightlighted");
+  verifyRendering(div2, false, "visible");
+  style = getComputedStyle(div);
+  ok( style.getPropertyValue('background-color') == 'rgb(224, 238, 224)', "Passed!" );
+  //ok( style.getPropertyValue('border-color') == 'rgb(48, 187, 48)', "Passed!" );
+  style2 = getComputedStyle(div2);
+  ok( style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
+  //ok( style2.getPropertyValue('border-color') == '', "Passed!" );
+  
   document.getElementsByName('modificationModifiedVersion')[0].click();
   verifyRendering(div, true, "hidden");
+  verifyRendering(div2, false, "visible");
+  style = getComputedStyle(div);
+  ok( style.getPropertyValue('background-color') == null || style.getPropertyValue('background-color') == 'transparent', "Passed!" );
+  //ok( style.getPropertyValue('border-color') == null || style.getPropertyValue('border-color') == '', "Passed!" );
+  style2 = getComputedStyle(div2);
+  ok( style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
+  //ok( style2.getPropertyValue('border-color') == '', "Passed!" );
+  
   document.getElementsByName('modificationDisplayedVersion')[1].click();
   verifyRendering(div, false, "visible");
+  verifyRendering(div2, false, "visible");
+  style = getComputedStyle(div);
+  ok( style.getPropertyValue('background-color') == null || style.getPropertyValue('background-color') == 'transparent', "Passed!" );
+  //ok( style.getPropertyValue('border-color') == null || style.getPropertyValue('border-color') == '', "Passed!" );
+  style2 = getComputedStyle(div2);
+  ok( style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
+  //ok( style2.getPropertyValue('border-color') == '', "Passed!" );
+  
   document.getElementsByName('modificationModifiedVersion')[0].click();
   verifyRendering(div, false, "hightlighted");
+  verifyRendering(div2, false, "visible");
+  style = getComputedStyle(div);
+  ok( style.getPropertyValue('background-color') == 'rgb(224, 238, 224)', "Passed!" );
+  //ok( style.getPropertyValue('border-color') == 'rgb(48, 187, 48)', "Passed!" );
+  style2 = getComputedStyle(div2);
+  ok( style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
+  //ok( style2.getPropertyValue('border-color') == '', "Passed!" );
+  
   document.getElementsByName('modificationModifiedVersion')[0].click();
   verifyRendering(div, false, "visible");
+  verifyRendering(div2, false, "visible");
+  style = getComputedStyle(div);
+  ok( style.getPropertyValue('background-color') == null || style.getPropertyValue('background-color') == 'transparent', "Passed!" );
+  //ok( style.getPropertyValue('border-color') == null || style.getPropertyValue('border-color') == '', "Passed!" );
+  style2 = getComputedStyle(div2);
+  ok( style2.getPropertyValue('background-color') == 'transparent', "Passed!" );
+  //ok( style2.getPropertyValue('border-color') == '', "Passed!" );
+  
+  div2.remove();
 });

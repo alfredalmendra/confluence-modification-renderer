@@ -17,13 +17,19 @@ function renderVersion(renderedVersion) {
     if(versionCheckbox != null && versionCheckbox.checked) {
       $(this).attr('renderStyle', 'hightlighted');
       $(this).attr('hidden', false);
+      $(this).css('background-color', 'rgb(224, 238, 224)');
+      //$(this).css('border-color', 'rgb(48, 187, 48)');
     } else if( (modifAction == 'add' && modifVersion > renderedVersion)
         || (modifAction == 'delete' && modifVersion <= renderedVersion) ) {
       $(this).attr('renderStyle', 'hidden');
       $(this).attr('hidden', true);
+      $(this).css('background-color', 'transparent');
+      //$(this).css('border-color', '');
     } else if(modifAction !== undefined && modifVersion !== undefined) {
       $(this).attr('renderStyle', 'visible');
       $(this).attr('hidden', false);
+      $(this).css('background-color', 'transparent');
+      //$(this).css('border-color', '');
     }
   });
 }
