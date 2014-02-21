@@ -1,4 +1,5 @@
 STR = {
+  get TITLE_NO_MODIFICATION() { return '(No modification)'; },
   get TITLE_CURRENT_VERSION() { return 'Current version'; },
   get TITLE_HIGHLIGHT_MODIFICATIONS() { return 'Highlight modifications'; },
   get TITLE_TEAM() { return 'Team'; },
@@ -131,7 +132,9 @@ function renderToolbar() {
       toolbarDiv.appendChild(createInput('checkbox', STR.AUTHOR_TEAM, teamList[index], 'renderCurrentVersion()'));
     }
   }
-  if(toolbarDiv != null) {
-    $("body").prepend(toolbarDiv);
+  if(toolbarDiv == null) {
+    toolbarDiv = createToolbarDiv();
+    toolbarDiv.innerHTML += STR.TITLE_NO_MODIFICATION;
   }
+  $("body").prepend(toolbarDiv);
 }

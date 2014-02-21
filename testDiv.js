@@ -64,10 +64,13 @@ test( "Div added in version 2 is visible while reading version 2", function() {
   renderVersion(2);
   verifyRendering(div, false, STR.VISIBLE);
 });
-test( "No modification toolbar if no div with specific attributes", function() {
-  renderToolbar();
+test( "No modification title in the toolbar if no div with specific attributes", function() {
   var toolbarDiv = document.getElementById(STR.TOOLBAR);
   ok( (toolbarDiv instanceof HTMLDivElement) == false, "Passed!" );
+  renderToolbar();
+  toolbarDiv = document.getElementById(STR.TOOLBAR);
+  ok( toolbarDiv instanceof HTMLDivElement, "Passed!" );
+  ok( toolbarDiv.innerHTML == STR.TITLE_NO_MODIFICATION, "Passed!" );
 });
 test( "Modification toolbar is available since div with specific attributes exist", function() {
   var modifiedVersion = 2;
