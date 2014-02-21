@@ -5,23 +5,23 @@
   <title>Sample page 1</title>
 </head>
 <body>
-  <p><div/>Paragraph always visible</p>
+  <div modificationType="paragraph"></div><p>Paragraph always visible</p>
   
-  <p><div modificationAction="add" modificationVersion="2"/>Paragraph added in version 2</p>
-  <p><div modificationAction="delete" modificationVersion="2"/>Paragraph deleted in version 2</p>
+  <div modificationAction="add" modificationVersion="2" modificationType="paragraph" modificationType="paragraph"></div><p>Paragraph added in version 2</p>
+  <div modificationAction="delete" modificationVersion="2" modificationType="paragraph"></div><p>Paragraph deleted in version 2</p>
   
-  <p><div modificationAction="add" modificationVersion="2" modificationTeam="recette"/>Paragraph added by recette in version 2</p>
-  <p><div modificationAction="add" modificationVersion="2" modificationTeam="dev"/>Paragraph added by dev in version 2</p>
-  <p><div modificationAction="delete" modificationVersion="2" modificationTeam="recette"/>Paragraph deleted by recette in version 2</p>
-  <p><div modificationAction="delete" modificationVersion="2" modificationTeam="spec"/>Paragraph deleted by spec in version 2</p>
+  <div modificationAction="add" modificationVersion="2" modificationTeam="recette" modificationType="paragraph"></div><p>Paragraph added by recette in version 2</p>
+  <div modificationAction="add" modificationVersion="2" modificationTeam="dev" modificationType="paragraph"></div><p>Paragraph added by dev in version 2</p>
+  <div modificationAction="delete" modificationVersion="2" modificationTeam="recette" modificationType="paragraph"></div><p>Paragraph deleted by recette in version 2</p>
+  <div modificationAction="delete" modificationVersion="2" modificationTeam="spec" modificationType="paragraph"></div><p>Paragraph deleted by spec in version 2</p>
   
-  <p><div modificationAction="add" modificationVersion="3"/>Paragraph added in version 3</p>
-  <p><div modificationAction="delete" modificationVersion="3"/>Paragraph deleted in version 3</p>
+  <div modificationAction="add" modificationVersion="3" modificationType="paragraph"></div><p>Paragraph added in version 3</p>
+  <div modificationAction="delete" modificationVersion="3" modificationType="paragraph"></div><p>Paragraph deleted in version 3</p>
   
-  <p><div modificationAction="add" modificationVersion="3" modificationTeam="spec"/>Paragraph added by spec in version 3</p>
-  <p><div modificationAction="add" modificationVersion="3" modificationTeam="recette"/>Paragraph added by recette in version 3</p>
-  <p><div modificationAction="delete" modificationVersion="3" modificationTeam="recette"/>Paragraph deleted by recette in version 3</p>
-  <p><div modificationAction="delete" modificationVersion="3" modificationTeam="dev"/>Paragraph deleted by dev in version 3</p>
+  <div modificationAction="add" modificationVersion="3" modificationTeam="spec" modificationType="paragraph"></div><p>Paragraph added by spec in version 3</p>
+  <div modificationAction="add" modificationVersion="3" modificationTeam="recette" modificationType="paragraph"></div><p>Paragraph added by recette in version 3</p>
+  <div modificationAction="delete" modificationVersion="3" modificationTeam="recette" modificationType="paragraph"></div><p>Paragraph deleted by recette in version 3</p>
+  <div modificationAction="delete" modificationVersion="3" modificationTeam="dev" modificationType="paragraph"></div><p>Paragraph deleted by dev in version 3</p>
   
   <script src="jquery-1.11.0.js"></script>
   <script src="underscore.js"></script>

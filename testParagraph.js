@@ -21,7 +21,10 @@ module( "Paragraph rendering", {
     for(var indexAction = 0; indexAction < actions.length; indexAction++) {
       for(var indexVersion = 0; indexVersion < versions.length; indexVersion++) {
         for(var indexTeam = 0; indexTeam < teams.length; indexTeam++) {
-          var element = document.getElementById('p' + getId(actions[indexAction], versions[indexVersion], teams[indexTeam]));
+          var id = getId(actions[indexAction], versions[indexVersion], teams[indexTeam]);
+          var element = document.getElementById('div' + id);
+          if(element != null) { element.remove(); }
+          element = document.getElementById('p' + id);
           if(element != null) { element.remove(); }
         }
       }
@@ -40,17 +43,18 @@ function getId(modificationAction, modificationVersion, modificationTeam) {
   return getEmptyIfNull(modificationAction) + getEmptyIfNull(modificationVersion) + getEmptyIfNull(modificationTeam);
 }
 function addNewParagraph(modificationAction, modificationVersion, modificationTeam) {
-  var newParagraph = document.createElement('p');
-  var newDiv = document.createElement('div');
-  newDiv.setAttribute(STR.TYPE, STR.PARAGRAPH);
-  newParagraph.appendChild(newDiv);
-  document.body.appendChild(newParagraph);
   var id = getId(modificationAction, modificationVersion, modificationTeam);
+  var newDiv = document.createElement('div');
+  newDiv.setAttribute('id', 'div' + id);
+  newDiv.setAttribute(STR.TYPE, STR.PARAGRAPH);
   if(modificationAction != null) { newDiv.setAttribute(STR.ACTION, modificationAction); }
   if(modificationVersion != null) { newDiv.setAttribute(STR.VERSION, modificationVersion); }
   if(modificationTeam != null) { newDiv.setAttribute(STR.TEAM, modificationTeam); }
-  newDiv.setAttribute('id', 'div' + id);
+  document.body.appendChild(newDiv);
+  
+  var newParagraph = document.createElement('p');
   newParagraph.setAttribute('id', 'p' + id);
+  document.body.appendChild(newParagraph);
 }
 function clickOn(groupName, version) {
   document.getElementById(groupName + version).click();

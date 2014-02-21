@@ -55,7 +55,7 @@ function renderVersion(renderedVersion) {
     
     var modifiedElement = $(this);
     if(isParagraph) {
-      modifiedElement = modifiedElement.parent();
+      modifiedElement = modifiedElement.next();
       if(modifiedElement === undefined || modifiedElement == null || modifiedElement.get(0).tagName != 'P') {
         // TODO : highlight error ?
         return ;
