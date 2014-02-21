@@ -72,6 +72,13 @@ test( "Empty paragraph is always visible", function() {
   verifyRenderingAndColors(pEmpty, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   verifyRenderingAndColors(divEmpty, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   clickOn(STR.MODIFIED_VERSION, 3);
+  clickOn(STR.MODIFIED_VERSION, 4);
+  clickOn(STR.MODIFIED_VERSION, 5);
+  verifyRenderingAndColors(pEmpty, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(divEmpty, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  clickOn(STR.AUTHOR_TEAM, 'spec');
+  clickOn(STR.AUTHOR_TEAM, 'dev');
+  clickOn(STR.AUTHOR_TEAM, 'recette');
   verifyRenderingAndColors(pEmpty, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   verifyRenderingAndColors(divEmpty, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
 });
