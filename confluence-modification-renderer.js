@@ -12,6 +12,8 @@ STR = {
   get ACTION() { return 'modificationAction'; },
   get VERSION() { return 'modificationVersion'; },
   get TEAM() { return 'modificationTeam'; },
+  get TYPE() { return 'modificationType'; },
+  get PARAGRAPH() { return 'paragraph'; },
   get HIDDEN() { return 'hidden'; },
   get VISIBLE() { return 'visible'; },
   get HIGHLIGHTED() { return 'hightlighted'; },
