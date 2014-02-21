@@ -26,6 +26,8 @@ module( "Paragraph rendering", {
         }
       }
     }
+    var toolbarDiv = document.getElementById(STR.TOOLBAR);
+    if(toolbarDiv != null) toolbarDiv.remove();
   }
 });
 function getEmptyIfNull(value) {
@@ -40,13 +42,13 @@ function getId(modificationAction, modificationVersion, modificationTeam) {
 function addNewParagraph(modificationAction, modificationVersion, modificationTeam) {
   var newParagraph = document.createElement('p');
   var newDiv = document.createElement('div');
+  newDiv.setAttribute(STR.TYPE, STR.PARAGRAPH);
   newParagraph.appendChild(newDiv);
   document.body.appendChild(newParagraph);
   var id = getId(modificationAction, modificationVersion, modificationTeam);
   if(modificationAction != null) { newDiv.setAttribute(STR.ACTION, modificationAction); }
   if(modificationVersion != null) { newDiv.setAttribute(STR.VERSION, modificationVersion); }
   if(modificationTeam != null) { newDiv.setAttribute(STR.TEAM, modificationTeam); }
-  newDiv.setAttribute(STR.TYPE, STR.PARAGRAPH);
   newDiv.setAttribute('id', 'div' + id);
   newParagraph.setAttribute('id', 'p' + id);
 }
@@ -64,7 +66,7 @@ function verifyRenderingAndColors(element, hidden, renderStyle, backgroundColor)
   var elementBackgroundColor = style.getPropertyValue('background-color');
   ok( elementBackgroundColor == backgroundColor, "Passed!" );
 }
-test( "Empty paragraph is always visible", function() {
+test( "Paragraph without specific attributes is always visible", function() {
   renderToolbar();
   var pEmpty = document.getElementById('p' + getId(null, null, null));
   var divEmpty = document.getElementById('div' + getId(null, null, null));
@@ -81,4 +83,27 @@ test( "Empty paragraph is always visible", function() {
   clickOn(STR.AUTHOR_TEAM, 'recette');
   verifyRenderingAndColors(pEmpty, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   verifyRenderingAndColors(divEmpty, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+});
+test( "Paragraph should be highlighted, but inner div remains unchanged", function() {
+  renderToolbar();
+  var pDelete3Spec = document.getElementById('p' + getId(STR.DELETE, 3, VAL.SPEC));
+  var divDelete3Spec = document.getElementById('div' + getId(STR.DELETE, 3, VAL.SPEC));
+  clickOn(STR.DISPLAYED_VERSION, 4);
+  verifyRenderingAndColors(pDelete3Spec, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(divDelete3Spec, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  clickOn(STR.MODIFIED_VERSION, 3);
+  verifyRenderingAndColors(pDelete3Spec, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(divDelete3Spec, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  clickOn(STR.AUTHOR_TEAM, 'spec');
+  verifyRenderingAndColors(pDelete3Spec, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_DELETE);
+  verifyRenderingAndColors(divDelete3Spec, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  clickOn(STR.MODIFIED_VERSION, 3);
+  verifyRenderingAndColors(pDelete3Spec, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(divDelete3Spec, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  clickOn(STR.MODIFIED_VERSION, 3);
+  verifyRenderingAndColors(pDelete3Spec, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_DELETE);
+  verifyRenderingAndColors(divDelete3Spec, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  clickOn(STR.AUTHOR_TEAM, 'spec');
+  verifyRenderingAndColors(pDelete3Spec, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  verifyRenderingAndColors(divDelete3Spec, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
 });

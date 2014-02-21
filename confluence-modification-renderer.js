@@ -38,9 +38,11 @@ function renderVersion(renderedVersion) {
     var modifAction = $(this).attr(STR.ACTION);
     var modifVersion = $(this).attr(STR.VERSION);
     var modifTeam = $(this).attr(STR.TEAM);
+    var modifType = $(this).attr(STR.TYPE);
     
     var versionCheckbox = document.getElementById(STR.MODIFIED_VERSION + modifVersion);
     var teamCheckbox = document.getElementById(STR.AUTHOR_TEAM + modifTeam);
+    var isParagraph = (modifType == STR.PARAGRAPH);
     
     var willBeHightlighted = (modifVersion == null || (versionCheckbox != null && versionCheckbox.checked));
     willBeHightlighted = willBeHightlighted && (modifTeam == null || (teamCheckbox != null && teamCheckbox.checked));
@@ -51,27 +53,36 @@ function renderVersion(renderedVersion) {
     
     var willBeShown = (modifVersion !== undefined || (modifVersion == null && modifTeam != null));
     
+    var modifiedElement = $(this);
+    if(isParagraph) {
+      modifiedElement = modifiedElement.parent();
+      if(modifiedElement === undefined || modifiedElement == null || modifiedElement.get(0).tagName != 'P') {
+        // TODO : highlight error ?
+        return ;
+      }
+    }
+    
     if(willBeHightlighted) {
-      $(this).attr('renderStyle', STR.HIGHLIGHTED);
-      $(this).attr('hidden', false);
+      modifiedElement.attr('renderStyle', STR.HIGHLIGHTED);
+      modifiedElement.attr('hidden', false);
       if(modifAction == STR.ADD) {
-        $(this).css('background-color', STR.BACKGROUND_COLOR_ADD);
-        //$(this).css('border-color', 'rgb(48, 187, 48)');
+        modifiedElement.css('background-color', STR.BACKGROUND_COLOR_ADD);
+        //modifiedElement.css('border-color', 'rgb(48, 187, 48)');
       } else if(modifAction == STR.DELETE) {
-        $(this).css('background-color', STR.BACKGROUND_COLOR_DELETE);
+        modifiedElement.css('background-color', STR.BACKGROUND_COLOR_DELETE);
       } else {
-        $(this).css('background-color', STR.BACKGROUND_COLOR_OTHER);
+        modifiedElement.css('background-color', STR.BACKGROUND_COLOR_OTHER);
       }
     } else if(willBeHidden) {
-      $(this).attr('renderStyle', STR.HIDDEN);
-      $(this).attr('hidden', true);
-      $(this).css('background-color', STR.BACKGROUND_COLOR_NONE);
-      //$(this).css('border-color', '');
+      modifiedElement.attr('renderStyle', STR.HIDDEN);
+      modifiedElement.attr('hidden', true);
+      modifiedElement.css('background-color', STR.BACKGROUND_COLOR_NONE);
+      //modifiedElement.css('border-color', '');
     } else if(willBeShown) {
-      $(this).attr('renderStyle', STR.VISIBLE);
-      $(this).attr('hidden', false);
-      $(this).css('background-color', STR.BACKGROUND_COLOR_NONE);
-      //$(this).css('border-color', '');
+      modifiedElement.attr('renderStyle', STR.VISIBLE);
+      modifiedElement.attr('hidden', false);
+      modifiedElement.css('background-color', STR.BACKGROUND_COLOR_NONE);
+      //modifiedElement.css('border-color', '');
     }
   });
 }
