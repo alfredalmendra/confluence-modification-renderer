@@ -88,7 +88,7 @@ test( "Paragraph without specific attributes is always visible", function() {
   verifyRenderingAndColors(pEmpty, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
   verifyRenderingAndColors(divEmpty, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
 });
-test( "Paragraph should be highlighted, but inner div remains unchanged", function() {
+test( "Paragraph should be highlighted, but associated div remains unchanged", function() {
   renderToolbar();
   var pDelete3Spec = document.getElementById('p' + getId(STR.DELETE, 3, VAL.SPEC));
   var divDelete3Spec = document.getElementById('div' + getId(STR.DELETE, 3, VAL.SPEC));
