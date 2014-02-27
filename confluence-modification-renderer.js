@@ -1,4 +1,7 @@
 STR = {
+  get SPEC() { return 'spec'; },
+  get DEV() { return 'dev'; },
+  get RECETTE() { return 'recette'; },
   get TITLE_NO_MODIFICATION() { return '(No modification)'; },
   get TITLE_CURRENT_VERSION() { return 'Current version'; },
   get TITLE_HIGHLIGHT_MODIFICATIONS() { return 'Highlight modifications'; },
@@ -14,6 +17,8 @@ STR = {
   get TEAM() { return 'modificationTeam'; },
   get TYPE() { return 'modificationType'; },
   get PARAGRAPH() { return 'paragraph'; },
+  get TABLE_LINE() { return 'tableLine'; },
+  get TABLE_COLUMN() { return 'tableColumn'; },
   get HIDDEN() { return 'hidden'; },
   get VISIBLE() { return 'visible'; },
   get HIGHLIGHTED() { return 'hightlighted'; },

@@ -1,14 +1,9 @@
-VAL = {
-  get SPEC() { return 'spec'; },
-  get DEV() { return 'dev'; },
-  get RECETTE() { return 'recette'; }
-}
 var actions, versions, teams;
 module( "Paragraph rendering", {
   setup: function() {
     actions = [ null, STR.ADD, STR.DELETE ];
     versions = [ null, 3, 4, 5 ];
-    teams = [ null, VAL.SPEC, VAL.DEV, VAL.RECETTE ];
+    teams = [ null, STR.SPEC, STR.DEV, STR.RECETTE ];
     for(var indexAction = 0; indexAction < actions.length; indexAction++) {
       for(var indexVersion = 0; indexVersion < versions.length; indexVersion++) {
         for(var indexTeam = 0; indexTeam < teams.length; indexTeam++) {
@@ -90,8 +85,8 @@ test( "Paragraph without specific attributes is always visible", function() {
 });
 test( "Paragraph should be highlighted, but associated div remains unchanged", function() {
   renderToolbar();
-  var pDelete3Spec = document.getElementById('p' + getId(STR.DELETE, 3, VAL.SPEC));
-  var divDelete3Spec = document.getElementById('div' + getId(STR.DELETE, 3, VAL.SPEC));
+  var pDelete3Spec = document.getElementById('p' + getId(STR.DELETE, 3, STR.SPEC));
+  var divDelete3Spec = document.getElementById('div' + getId(STR.DELETE, 3, STR.SPEC));
   clickOn(STR.DISPLAYED_VERSION, 4);
   verifyRenderingAndColors(pDelete3Spec, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
   verifyRenderingAndColors(divDelete3Spec, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
