@@ -48,6 +48,7 @@ function renderVersion(renderedVersion) {
     var versionCheckbox = document.getElementById(STR.MODIFIED_VERSION + modifVersion);
     var teamCheckbox = document.getElementById(STR.AUTHOR_TEAM + modifTeam);
     var isParagraph = (modifType == STR.PARAGRAPH);
+    var isTableLine = (modifType == STR.TABLE_LINE);
     
     var willBeHightlighted = (modifVersion == null || (versionCheckbox != null && versionCheckbox.checked));
     willBeHightlighted = willBeHightlighted && (modifTeam == null || (teamCheckbox != null && teamCheckbox.checked));
@@ -62,6 +63,17 @@ function renderVersion(renderedVersion) {
     if(isParagraph) {
       modifiedElement = modifiedElement.next();
       if(modifiedElement === undefined || modifiedElement == null || modifiedElement.get(0).tagName != 'P') {
+        // TODO : highlight error ?
+        return ;
+      }
+    } else if(isTableLine) {
+      var td = modifiedElement.parent();
+      if(td.get(0).tagName == 'P') {
+        td = td.parent();
+      }
+      var tr = td.parent();
+      modifiedElement = tr;
+      if(modifiedElement === undefined || modifiedElement == null || modifiedElement.get(0).tagName != 'TR') {
         // TODO : highlight error ?
         return ;
       }

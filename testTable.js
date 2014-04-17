@@ -107,7 +107,40 @@ function verifyRenderingAndColors(element, hidden, renderStyle, backgroundColor)
   var elementBackgroundColor = style.getPropertyValue('background-color');
   ok( elementBackgroundColor == backgroundColor, "Passed!" );
 }
-test( "TODO", function() {
+test( "Table line should be highlighted, even if the associated div is under a paragraph", function() {
   renderToolbar();
-  ok( true == true, "Passed!" );
+  
+  clickOn(STR.DISPLAYED_VERSION, 4);
+  
+  var cell = document.getElementById(getCellId(false, STR.ADD, 5, false, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  cell = document.getElementById(getCellId(false, STR.ADD, 5, true, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  
+  cell = document.getElementById(getCellId(false, STR.ADD, 4, false, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  cell = document.getElementById(getCellId(false, STR.ADD, 4, true, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  
+  cell = document.getElementById(getCellId(false, STR.ADD, 3, false, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  cell = document.getElementById(getCellId(false, STR.ADD, 3, true, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  
+  clickOn(STR.MODIFIED_VERSION, 5);
+  
+  cell = document.getElementById(getCellId(false, STR.ADD, 5, false, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_ADD);
+  cell = document.getElementById(getCellId(false, STR.ADD, 5, true, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_ADD);
+  
+  cell = document.getElementById(getCellId(false, STR.ADD, 4, false, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  cell = document.getElementById(getCellId(false, STR.ADD, 4, true, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  
+  cell = document.getElementById(getCellId(false, STR.ADD, 3, false, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  cell = document.getElementById(getCellId(false, STR.ADD, 3, true, null, null, false));
+  verifyRenderingAndColors(cell.parentElement, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
 });
