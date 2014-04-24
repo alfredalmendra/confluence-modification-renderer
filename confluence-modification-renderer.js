@@ -5,11 +5,12 @@ STR = {
   get TITLE_NO_MODIFICATION() { return '(Aucune modification)'; },
   get TITLE_CURRENT_VERSION() { return 'Itération courante'; },
   get TITLE_HIGHLIGHT_MODIFICATIONS() { return 'Modifications'; },
-  get TITLE_TEAM() { return 'Equipe'; },
+  get TITLE_TEAM() { return 'Equipes'; },
   get ADD() { return 'ajout'; },
   get DELETE() { return 'suppression'; },
   get TOOLBAR() { return 'modificationToolbarDiv'; },
   get DISPLAYED_VERSION() { return 'modificationDisplayedVersion'; },
+  get DISPLAYED_VERSION_NOT_SET() { return -1; },
   get MODIFIED_VERSION() { return 'modificationModifiedVersion'; },
   get AUTHOR_TEAM() { return 'modificationAuthorTeam'; },
   get ACTION() { return 'typemodification'; },
@@ -34,6 +35,7 @@ function getRadioValue(theRadioGroup) {
       return elements[index].value;
     }
   }
+  return STR.DISPLAYED_VERSION_NOT_SET;
 }
 function renderCurrentVersion() {
   renderVersion(getRadioValue(STR.DISPLAYED_VERSION));
@@ -55,9 +57,9 @@ function renderVersion(renderedVersion) {
     willBeHightlighted = willBeHightlighted && (modifVersion != null || modifTeam != null);
     
     var willBeHidden = (modifAction == STR.ADD && modifVersion > renderedVersion)
-                       || (modifAction == STR.DELETE && modifVersion <= renderedVersion);
+                       || (modifAction == STR.DELETE && (modifVersion <= renderedVersion || renderedVersion == STR.DISPLAYED_VERSION_NOT_SET));
     
-    var willBeShown = (modifVersion !== undefined || (modifVersion == null && modifTeam != null));
+    var willBeShown = !willBeHightlighted && !willBeHidden && (modifVersion != null || modifTeam != null);
     
     var modifiedElement = $(this);
     if(isParagraph) {
@@ -82,6 +84,9 @@ function renderVersion(renderedVersion) {
     if(willBeHightlighted) {
       modifiedElement.attr('renderStyle', STR.HIGHLIGHTED);
       modifiedElement.attr('hidden', false);
+      var formatStyle = new String(modifAction).replace(STR.ADD,'success').replace(STR.DELETE,'problem');
+      modifiedElement.attr('class', 'aui-message ' + $(formatStyle) + ' shadowed information-macro');
+      modifiedElement.css('display', 'block');
       if(modifAction == STR.ADD) {
         modifiedElement.css('background-color', STR.BACKGROUND_COLOR_ADD);
         //modifiedElement.css('border-color', 'rgb(48, 187, 48)');
@@ -93,14 +98,26 @@ function renderVersion(renderedVersion) {
     } else if(willBeHidden) {
       modifiedElement.attr('renderStyle', STR.HIDDEN);
       modifiedElement.attr('hidden', true);
+      modifiedElement.attr('class', "");
+      modifiedElement.css('display', 'none');
       modifiedElement.css('background-color', STR.BACKGROUND_COLOR_NONE);
       //modifiedElement.css('border-color', '');
     } else if(willBeShown) {
       modifiedElement.attr('renderStyle', STR.VISIBLE);
       modifiedElement.attr('hidden', false);
+      modifiedElement.attr('class', "");
+      modifiedElement.css('display', 'block');
       modifiedElement.css('background-color', STR.BACKGROUND_COLOR_NONE);
       //modifiedElement.css('border-color', '');
     }
+    
+    modifiedElement.children().each(function() {
+      if($(this).prop("tagName") == 'P') {
+        if($(this).prop("className") == 'title') {
+          $(this).css('display', willBeHightlighted ? 'block' : 'none');
+        }
+      }
+    });
   });
 }
 function createInputElement(type, name, value, onclick) {
