@@ -166,5 +166,5 @@ function renderToolbar() {
     toolbarDiv = createToolbarDiv();
     toolbarDiv.innerHTML += STR.TITLE_NO_MODIFICATION;
   }
-  $("body").prepend(toolbarDiv);
+  $('.page-metadata').append(toolbarDiv);
 }

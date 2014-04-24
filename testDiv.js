@@ -1,6 +1,7 @@
 var div;
 module( "Div rendering", {
   setup: function() {
+    document.body.setAttribute("class", "page-metadata");
     div = addNewDiv();
   },
   teardown: function() {

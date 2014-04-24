@@ -1,6 +1,7 @@
 var table;
 module( "Table rendering", {
   setup: function() {
+    document.body.setAttribute("class", "page-metadata");
     table = document.createElement('table');
     document.body.appendChild(table);
     var tbody = document.createElement('tbody');

@@ -1,6 +1,7 @@
 var actions, versions, teams;
 module( "Paragraph rendering", {
   setup: function() {
+    document.body.setAttribute("class", "page-metadata");
     actions = [ null, STR.ADD, STR.DELETE ];
     versions = [ null, 3, 4, 5 ];
     teams = [ null, STR.SPEC, STR.DEV, STR.RECETTE ];
