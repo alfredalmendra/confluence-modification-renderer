@@ -103,7 +103,7 @@ function renderVersion(renderedVersion) {
     }
   });
 }
-function createInput(type, name, value, onclick) {
+function createInputElement(type, name, value, onclick) {
   var input = document.createElement('input')
   input.setAttribute('type', type);
   input.setAttribute('id', name + value);
@@ -143,12 +143,12 @@ function renderToolbar() {
       } else {
         toolbarDiv.innerHTML += version;
       }
-      toolbarDiv.appendChild(createInput('radio', STR.DISPLAYED_VERSION, version, 'renderVersion(' + version + ')'));
+      toolbarDiv.appendChild(createInputElement('radio', STR.DISPLAYED_VERSION, version, 'renderVersion(' + version + ')'));
     }
     toolbarDiv.innerHTML += ' - ' + STR.TITLE_HIGHLIGHT_MODIFICATIONS + ' : ';
     for(var index = 0; index < versionList.length; index++) {
       toolbarDiv.innerHTML += versionList[index];
-      toolbarDiv.appendChild(createInput('checkbox', STR.MODIFIED_VERSION, versionList[index], 'renderCurrentVersion()'));
+      toolbarDiv.appendChild(createInputElement('checkbox', STR.MODIFIED_VERSION, versionList[index], 'renderCurrentVersion()'));
     }
   }
   if(teamList.length > 0) {
@@ -159,7 +159,7 @@ function renderToolbar() {
     toolbarDiv.innerHTML += ' - ' + STR.TITLE_TEAM + ' : ';
     for(var index = 0; index < teamList.length; index++) {
       toolbarDiv.innerHTML += teamList[index];
-      toolbarDiv.appendChild(createInput('checkbox', STR.AUTHOR_TEAM, teamList[index], 'renderCurrentVersion()'));
+      toolbarDiv.appendChild(createInputElement('checkbox', STR.AUTHOR_TEAM, teamList[index], 'renderCurrentVersion()'));
     }
   }
   if(toolbarDiv == null) {
