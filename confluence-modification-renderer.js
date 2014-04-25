@@ -150,7 +150,7 @@ function renderToolbar() {
   });
   if(versionList.length > 0) {
     versionList = _.uniq(versionList);
-    versionList.sort();
+    versionList.sort(function(a,b){return a - b});
     var toolbarDiv = createToolbarDiv();
     toolbarDiv.innerHTML += STR.TITLE_CURRENT_VERSION + ' : ';
     var minVersion = versionList[0] - 1;
