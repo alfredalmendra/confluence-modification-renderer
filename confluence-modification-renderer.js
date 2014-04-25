@@ -87,7 +87,7 @@ function renderVersion(renderedVersion) {
       modifiedElement.attr('hidden', false);
       var formatStyle = new String(modifAction).replace(STR.ADD,'success').replace(STR.DELETE,'problem');
       modifiedElement.attr('class', 'aui-message ' + $(formatStyle) + ' shadowed information-macro');
-      modifiedElement.css('display', 'block');
+      modifiedElement.css('display', isTableLine ? 'table-row' : 'block');
       if(modifAction == STR.ADD) {
         modifiedElement.css('background-color', STR.BACKGROUND_COLOR_ADD);
         //modifiedElement.css('border-color', 'rgb(48, 187, 48)');
@@ -107,7 +107,7 @@ function renderVersion(renderedVersion) {
       modifiedElement.attr('renderStyle', STR.VISIBLE);
       modifiedElement.attr('hidden', false);
       modifiedElement.attr('class', "");
-      modifiedElement.css('display', 'block');
+      modifiedElement.css('display', isTableLine ? 'table-row' : 'block');
       modifiedElement.css('background-color', STR.BACKGROUND_COLOR_NONE);
       //modifiedElement.css('border-color', '');
     }
