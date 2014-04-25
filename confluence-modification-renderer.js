@@ -52,6 +52,7 @@ function renderVersion(renderedVersion) {
     var teamCheckbox = document.getElementById(STR.AUTHOR_TEAM + modifTeam);
     var isParagraph = (modifType == STR.PARAGRAPH);
     var isTableLine = (modifType == STR.TABLE_LINE);
+    var isTableColumn = (modifType == STR.TABLE_COLUMN);
     
     var willBeHightlighted = (modifVersion == null || (versionCheckbox != null && versionCheckbox.checked));
     willBeHightlighted = willBeHightlighted && (modifTeam == null || (teamCheckbox != null && teamCheckbox.checked));
@@ -63,6 +64,7 @@ function renderVersion(renderedVersion) {
     var willBeShown = !willBeHightlighted && !willBeHidden && (modifVersion != null || modifTeam != null);
     
     var modifiedElement = $(this);
+    var tableElement = null;
     if(isParagraph) {
       modifiedElement = modifiedElement.next();
       if(modifiedElement === undefined || modifiedElement == null || modifiedElement.get(0).tagName != 'P') {
@@ -80,9 +82,51 @@ function renderVersion(renderedVersion) {
         // TODO : highlight error ?
         return ;
       }
+    } else if(isTableColumn) {
+      var th = modifiedElement.parent();
+      if(th.get(0).tagName == 'P') {
+        th = th.parent();
+      }
+      modifiedElement = th;
+      if(modifiedElement === undefined || modifiedElement == null || modifiedElement.get(0).tagName != 'TH') {
+        // TODO : highlight error ?
+        return ;
+      }
+      var tr = modifiedElement.parent();
+      if(tr === undefined || tr == null || tr.get(0).tagName != 'TR') {
+        // TODO : highlight error ?
+        return ;
+      }
+      tableElement = tr.parent();
+      if(tableElement.get(0).tagName == 'THEAD' || tableElement.get(0).tagName == 'TBODY') {
+        tableElement = tableElement.parent();
+      }
+      if(tableElement === undefined || tableElement == null || tableElement.get(0).tagName != 'TABLE') {
+        // TODO : highlight error ?
+        return ;
+      }
     }
     
-    if(willBeHightlighted) {
+    if(willBeHightlighted && isTableColumn) {
+      //var columnIndex = $(modifiedElement).parents('TABLE').find('TH').index(modifiedElement) + 1;
+      var columnIndex = tableElement.find('TH').index(modifiedElement) + 1;
+      $('TD:nth-child('+columnIndex+'),TH:nth-child('+columnIndex+')').each(function() {
+        $(this).attr('renderStyle', STR.HIGHLIGHTED);
+        $(this).attr('hidden', false);
+        var formatStyle = new String(modifAction).replace(STR.ADD,'success').replace(STR.DELETE,'problem');
+        $(this).attr('class', 'aui-message ' + $(formatStyle) + ' shadowed information-macro');
+        $(this).css('display', 'table-cell');
+        $(this).css('background-color', STR.BACKGROUND_COLOR_NONE);
+        if(modifAction == STR.ADD) {
+          $(this).css('background-color', STR.BACKGROUND_COLOR_ADD);
+          //$(this).css('border-color', 'rgb(48, 187, 48)');
+        } else if(modifAction == STR.DELETE) {
+          $(this).css('background-color', STR.BACKGROUND_COLOR_DELETE);
+        } else {
+          $(this).css('background-color', STR.BACKGROUND_COLOR_OTHER);
+        }
+      });
+    } else if(willBeHightlighted) {
       modifiedElement.attr('renderStyle', STR.HIGHLIGHTED);
       modifiedElement.attr('hidden', false);
       var formatStyle = new String(modifAction).replace(STR.ADD,'success').replace(STR.DELETE,'problem');
@@ -96,6 +140,17 @@ function renderVersion(renderedVersion) {
       } else {
         modifiedElement.css('background-color', STR.BACKGROUND_COLOR_OTHER);
       }
+    } else if(willBeHidden && isTableColumn) {
+      //var columnIndex = $(modifiedElement).parents('TABLE').find('TH').index(modifiedElement) + 1;
+      var columnIndex = tableElement.find('TH').index(modifiedElement) + 1;
+      $('TD:nth-child('+columnIndex+'),TH:nth-child('+columnIndex+')').each(function() {
+        $(this).attr('renderStyle', STR.HIDDEN);
+        $(this).attr('hidden', true);
+        $(this).attr('class', "");
+        $(this).css('display', 'none');
+        $(this).css('background-color', STR.BACKGROUND_COLOR_NONE);
+        //$(this).css('border-color', '');
+      });
     } else if(willBeHidden) {
       modifiedElement.attr('renderStyle', STR.HIDDEN);
       modifiedElement.attr('hidden', true);
@@ -103,6 +158,17 @@ function renderVersion(renderedVersion) {
       modifiedElement.css('display', 'none');
       modifiedElement.css('background-color', STR.BACKGROUND_COLOR_NONE);
       //modifiedElement.css('border-color', '');
+    } else if(willBeShown && isTableColumn) {
+      //var columnIndex = $(modifiedElement).parents('TABLE').find('TH').index(modifiedElement) + 1;
+      var columnIndex = tableElement.find('TH').index(modifiedElement) + 1;
+      $('TH:nth-child('+columnIndex+'),TH:nth-child('+columnIndex+')').each(function() {
+        $(this).attr('renderStyle', STR.VISIBLE);
+        $(this).attr('hidden', false);
+        $(this).attr('class', "");
+        $(this).css('display', 'table-cell');
+        $(this).css('background-color', STR.BACKGROUND_COLOR_NONE);
+        //$(this).css('border-color', '');
+      });
     } else if(willBeShown) {
       modifiedElement.attr('renderStyle', STR.VISIBLE);
       modifiedElement.attr('hidden', false);
@@ -112,13 +178,15 @@ function renderVersion(renderedVersion) {
       //modifiedElement.css('border-color', '');
     }
     
-    modifiedElement.children().each(function() {
-      if($(this).prop("tagName") == 'P') {
-        if($(this).prop("className") == 'title') {
-          $(this).css('display', willBeHightlighted ? 'block' : 'none');
+    if(!isTableColumn) {
+      modifiedElement.children().each(function() {
+        if($(this).prop("tagName") == 'P') {
+          if($(this).prop("className") == 'title') {
+            $(this).css('display', willBeHightlighted ? 'block' : 'none');
+          }
         }
-      }
-    });
+      });
+    }
   });
 }
 function createInputElement(type, name, value, onclick) {

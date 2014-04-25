@@ -145,3 +145,40 @@ test( "Table line should be highlighted, even if the associated div is under a p
   cell = document.getElementById(getCellId(false, STR.ADD, 3, true, null, null, false));
   verifyRenderingAndColors(cell.parentElement, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
 });
+test( "Table column should be highlighted, even if the associated div is under a paragraph", function() {
+  renderToolbar();
+  
+  clickOn(STR.DISPLAYED_VERSION, 4);
+  
+  var cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 5, false));
+  verifyRenderingAndColors(cell, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 5, true));
+  verifyRenderingAndColors(cell, true, STR.HIDDEN, STR.BACKGROUND_COLOR_NONE);
+  
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 4, false));
+  verifyRenderingAndColors(cell, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 4, true));
+  verifyRenderingAndColors(cell, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 3, false));
+  verifyRenderingAndColors(cell, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 3, true));
+  verifyRenderingAndColors(cell, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  
+  clickOn(STR.MODIFIED_VERSION, 5);
+  
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 5, false));
+  verifyRenderingAndColors(cell, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_ADD);
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 5, true));
+  verifyRenderingAndColors(cell, false, STR.HIGHLIGHTED, STR.BACKGROUND_COLOR_ADD);
+  
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 4, false));
+  verifyRenderingAndColors(cell, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 4, true));
+  verifyRenderingAndColors(cell, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 3, false));
+  verifyRenderingAndColors(cell, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+  cell = document.getElementById(getCellId(true, null, null, false, STR.ADD, 3, true));
+  verifyRenderingAndColors(cell, false, STR.VISIBLE, STR.BACKGROUND_COLOR_NONE);
+});
