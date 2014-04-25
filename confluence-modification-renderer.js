@@ -41,6 +41,7 @@ function renderCurrentVersion() {
   renderVersion(getRadioValue(STR.DISPLAYED_VERSION));
 }
 function renderVersion(renderedVersion) {
+  if(renderedVersion == null || renderedVersion === undefined) renderedVersion = STR.DISPLAYED_VERSION_NOT_SET;
   $('div').each(function(index, element) {
     var modifAction = $(this).attr(STR.ACTION);
     var modifVersion = $(this).attr(STR.VERSION);
@@ -56,8 +57,8 @@ function renderVersion(renderedVersion) {
     willBeHightlighted = willBeHightlighted && (modifTeam == null || (teamCheckbox != null && teamCheckbox.checked));
     willBeHightlighted = willBeHightlighted && (modifVersion != null || modifTeam != null);
     
-    var willBeHidden = (modifAction == STR.ADD && modifVersion > renderedVersion)
-                       || (modifAction == STR.DELETE && (modifVersion <= renderedVersion || renderedVersion == STR.DISPLAYED_VERSION_NOT_SET));
+    var willBeHidden = (renderedVersion != STR.DISPLAYED_VERSION_NOT_SET && modifAction == STR.ADD && modifVersion > renderedVersion)
+                       || (modifAction == STR.DELETE && (renderedVersion == STR.DISPLAYED_VERSION_NOT_SET || modifVersion <= renderedVersion));
     
     var willBeShown = !willBeHightlighted && !willBeHidden && (modifVersion != null || modifTeam != null);
     
