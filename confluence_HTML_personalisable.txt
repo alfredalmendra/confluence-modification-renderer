@@ -2741,6 +2741,73 @@ function tf_removeNbFormat(data,format){ return tf_RemoveNbFormat(data,format); 
 /* --- */
 
 
+
+  TF.prototype.RemoveHelpInstructions = function()
+  /*====================================================
+    - Removes help instructions
+  =====================================================*/
+  {
+    if(this.helpInstrBtnEl==null) return;
+    this.helpInstrBtnEl.parentNode.removeChild(this.helpInstrBtnEl);
+    this.helpInstrBtnEl = null;
+    if(this.helpInstrContEl==null) return;
+    this.helpInstrContEl.parentNode.removeChild(this.helpInstrContEl);
+    this.helpInstrContEl = null;
+  }
+  
+  var activationScript = "";
+  var desactivationScript = "";
+  var filterScript = "";
+  var tableFilterButtonActivated = false;
+  
+  var timeouts = [];
+  
+  function tableFilterButton_onClick() {
+    for (var indexSecond = 0; indexSecond < timeouts.length; indexSecond++) {
+        clearTimeout(timeouts[indexSecond]);
+    }
+    timeouts = [];
+  
+    var tableFilterButton = document.getElementById("tableFilterButton");
+    console.log("tableFilterButtonActivated = " + tableFilterButtonActivated);
+    if(tableFilterButtonActivated) {
+      tableFilterButton.setAttribute("onClick",activationScript + " tableFilterButton_onClick();");
+      tableFilterButton.setAttribute("class","watch-menu not-watching");
+      tableFilterButtonActivated = false;
+    } else {
+      tableFilterButton.setAttribute("onClick",desactivationScript + " tableFilterButton_onClick();");
+      tableFilterButton.setAttribute("class","watch-menu watching");
+      tableFilterButtonActivated = true;
+    }
+  }
+  
+  AJS.toInit(function() {
+    $('table').each(function() {
+      if(!$(this).attr('id')) {
+        var table_id = "table_" + $(this).position().left + "_" + $(this).position().top;
+        //table_id = table_id.replace(".","_");
+        table_id = table_id.split(".").join("_");
+        console.log("table_id " + table_id);
+        $(this).attr('id',table_id);
+        var tf = setFilterGrid(table_id);
+        /* cf. http://tablefilter.free.fr/ex.php */
+        filterScript += ' tf_' + table_id + '.Filter();';
+        activationScript += ' tf_' + table_id + '.AddGrid();';
+        desactivationScript += ' tf_' + table_id + '.RemoveGrid();';
+        var removeScript = 'tf_' + table_id + '.RemoveGrid()';
+        
+        timeouts.push(setTimeout(function(){ eval(removeScript); },500));
+        for(var indexSecond = 1; indexSecond < 20; indexSecond++) {
+          timeouts.push(setTimeout(function(){ eval(removeScript); }, indexSecond * 1000));
+        }
+      }
+    });
+    $('ul.ajs-menu-bar').prepend('<li class="ajs-button normal"><a id="tableFilterButton" href="#" onClick="' + activationScript + ' tableFilterButton_onClick();" class="watch-menu not-watching" title="Tableaux filtrables"><span>Tableaux filtrables</span></a></li>');
+  });
+
+
+
+
   window.hightlightModifications = function hightlightModifications(valIteration, valEquipe, valTypeModification, valActive) {
     $('div').each(function() {
       var iteration = $(this).attr('iteration');
@@ -2827,6 +2894,8 @@ function tf_removeNbFormat(data,format){ return tf_RemoveNbFormat(data,format); 
         hightlightModifications(iterations[indexIT].value, equipes[indexEquipe].value, 'suppression', typeActif);
       }
     }
+    /* FIXME : les lignes ajoutées dans les itérations futures apparaissent à tort */
+    eval(filterScript);
   }
   window.lookForModification = function lookForModification(valAttribute, valAttrValue) {
     var result = false;
@@ -2910,70 +2979,6 @@ function tf_removeNbFormat(data,format){ return tf_RemoveNbFormat(data,format); 
     }
     $('.page-metadata').append(modificationToolbar);
     DisplayModifications();
-  });
-
-
-
-
-  TF.prototype.RemoveHelpInstructions = function()
-  /*====================================================
-    - Removes help instructions
-  =====================================================*/
-  {
-    if(this.helpInstrBtnEl==null) return;
-    this.helpInstrBtnEl.parentNode.removeChild(this.helpInstrBtnEl);
-    this.helpInstrBtnEl = null;
-    if(this.helpInstrContEl==null) return;
-    this.helpInstrContEl.parentNode.removeChild(this.helpInstrContEl);
-    this.helpInstrContEl = null;
-  }
-  
-  var activationScript = "";
-  var desactivationScript = "";
-  var tableFilterButtonActivated = false;
-  
-  var timeouts = [];
-  
-  function tableFilterButton_onClick() {
-    for (var indexSecond = 0; indexSecond < timeouts.length; indexSecond++) {
-        clearTimeout(timeouts[indexSecond]);
-    }
-    timeouts = [];
-  
-    var tableFilterButton = document.getElementById("tableFilterButton");
-    console.log("tableFilterButtonActivated = " + tableFilterButtonActivated);
-    if(tableFilterButtonActivated) {
-      tableFilterButton.setAttribute("onClick",activationScript + " tableFilterButton_onClick();");
-      tableFilterButton.setAttribute("class","watch-menu not-watching");
-      tableFilterButtonActivated = false;
-    } else {
-      tableFilterButton.setAttribute("onClick",desactivationScript + " tableFilterButton_onClick();");
-      tableFilterButton.setAttribute("class","watch-menu watching");
-      tableFilterButtonActivated = true;
-    }
-  }
-  
-  AJS.toInit(function() {
-    $('table').each(function() {
-      if(!$(this).attr('id')) {
-        var table_id = "table_" + $(this).position().left + "_" + $(this).position().top;
-        //table_id = table_id.replace(".","_");
-        table_id = table_id.split(".").join("_");
-        console.log("table_id " + table_id);
-        $(this).attr('id',table_id);
-        var tf = setFilterGrid(table_id);
-        /* cf. http://tablefilter.free.fr/ex.php */
-        activationScript += ' tf_' + table_id + '.AddGrid();';
-        desactivationScript += ' tf_' + table_id + '.RemoveGrid();';
-        var removeScript = 'tf_' + table_id + '.RemoveGrid()';
-        
-        timeouts.push(setTimeout(function(){ eval(removeScript); },500));
-        for(var indexSecond = 1; indexSecond < 20; indexSecond++) {
-          timeouts.push(setTimeout(function(){ eval(removeScript); }, indexSecond * 1000));
-        }
-      }
-    });
-    $('ul.ajs-menu-bar').prepend('<li class="ajs-button normal"><a id="tableFilterButton" href="#" onClick="' + activationScript + ' tableFilterButton_onClick();" class="watch-menu not-watching" title="Tableaux filtrables"><span>Tableaux filtrables</span></a></li>');
   });
 
 </script>
