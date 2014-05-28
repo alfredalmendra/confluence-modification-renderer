@@ -1,5 +1,39 @@
 <script>
 
+  var ancienExpandCourant = null;
+  function expandIteration(iterationCourante) {
+    var identique = null;
+    var precedente = null;
+    var titrePrefixe = "expand_iteration_";
+    jQuery(".expand-control-text").each(function(){
+      var titreId = $(this).text().replace(' ','').toLowerCase().replace('é','e').replace('iteration','');
+      $(this).attr('id', titrePrefixe + titreId);
+      if(iterationCourante == titreId) {
+        identique = titreId;
+      } else if(titreId < iterationCourante && (precedente == null || precedente < titreId)) {
+        precedente = titreId;
+      }
+    });
+    var titreId = null;
+    if(identique != null) {
+      titreId = identique;
+    } else if(precedente != null) {
+      titreId = precedente;
+    }
+    if(''+titreId == ''+ancienExpandCourant) {
+      return ;
+    }
+    if(ancienExpandCourant != null) {
+      $('#' + titrePrefixe + ancienExpandCourant).parent().trigger("click");
+      ancienExpandCourant = null;
+    }
+    if(titreId != null) {
+      $('#' + titrePrefixe + titreId).parent().trigger("click");
+      ancienExpandCourant = titreId;
+    }
+  }
+
+
   window.hightlightModifications = function hightlightModifications(valIteration, valEquipe, valTypeModification, valActive) {
     $('div').each(function() {
       var iteration = $(this).attr('iteration');
@@ -68,21 +102,23 @@
   window.DisplayModifications = function DisplayModifications() {
     var itCourante = getRadioValue("IterationCourante");
     if(itCourante === undefined) {
-      itCourante = 0;
+      itCourante = 999;
     }
     var dureeCookies = 10;
     createModificationCookie('IterationCourante', itCourante, dureeCookies);
     var iterations = document.getElementsByName("SelectionIteration");
     var equipes = document.getElementsByName("SelectionEquipe");
+    var itCouranteNumber = parseInt(itCourante,10);
+    expandIteration(itCouranteNumber);
     for (var indexIT = 0; indexIT < iterations.length; indexIT++) {
       createModificationCookie('SelectionIteration' + iterations[indexIT].value, iterations[indexIT].checked ? iterations[indexIT].value : '', dureeCookies);
       for (var indexEquipe = 0; indexEquipe < equipes.length; indexEquipe++) {
         createModificationCookie('SelectionEquipe' + equipes[indexEquipe].value, equipes[indexEquipe].checked ? equipes[indexEquipe].value : '', dureeCookies);
         var typeActif = iterations[indexIT].checked && equipes[indexEquipe].checked ? 'showDelta'
-          : (parseInt(itCourante,10) < parseInt(iterations[indexIT].value,10) ? 'hide' : 'showText');
+          : (itCouranteNumber < parseInt(iterations[indexIT].value,10) ? 'hide' : 'showText');
         hightlightModifications(iterations[indexIT].value, equipes[indexEquipe].value, 'ajout', typeActif);
         typeActif = iterations[indexIT].checked && equipes[indexEquipe].checked ? 'showDelta'
-          : (parseInt(itCourante,10) < parseInt(iterations[indexIT].value,10) ? 'showText' : 'hide');
+          : (itCouranteNumber < parseInt(iterations[indexIT].value,10) ? 'showText' : 'hide');
         hightlightModifications(iterations[indexIT].value, equipes[indexEquipe].value, 'suppression', typeActif);
       }
     }
@@ -133,7 +169,7 @@
     var cookieIterationCourante = readModificationCookie('IterationCourante');
     console.log('IterationCourante ' + cookieIterationCourante);
     if(cookieIterationCourante == null) {
-      cookieIterationCourante = 0;
+      cookieIterationCourante = 999;
     }
     var modificationToolbar = "";
     modificationToolbar += 'Itération courante :';
