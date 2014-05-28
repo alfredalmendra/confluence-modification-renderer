@@ -6,7 +6,7 @@
     var precedente = null;
     var titrePrefixe = "expand_iteration_";
     jQuery(".expand-control-text").each(function(){
-      var titreId = $(this).text().replace(' ','').toLowerCase().replace('é','e').replace('iteration','');
+      var titreId = parseInt($(this).text().replace(' ','').toLowerCase().replace('é','e').replace('iteration',''), 10);
       $(this).attr('id', titrePrefixe + titreId);
       if(iterationCourante == titreId) {
         identique = titreId;
@@ -21,6 +21,7 @@
       titreId = precedente;
     }
     if(''+titreId == ''+ancienExpandCourant) {
+      console.log('EXPAND : on reste sur ' + ancienExpandCourant);
       return ;
     }
     if(ancienExpandCourant != null) {
@@ -30,6 +31,9 @@
     if(titreId != null) {
       $('#' + titrePrefixe + titreId).parent().trigger("click");
       ancienExpandCourant = titreId;
+      console.log('EXPAND : on passe sur ' + ancienExpandCourant);
+    } else {
+      console.log('EXPAND : aucun');
     }
   }
 
